@@ -32,6 +32,7 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements
     public void add(People people) {
         this.peopleDao.insert(people);
     }
+
     public ResultDTO getPeoples(PeopleDTO.getPeoples dto) {
         String jzdzDzbm = dto.getJzdzDzbm();
         String jzdzSsxqdm = dto.getJzdzSsxqdm();
@@ -43,7 +44,7 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements
                 .eq(StrUtil.isNotBlank(jzdzDzbm),"jzdz_dzbm", jzdzDzbm).likeRight(StrUtil.isNotBlank(jzdzSsxqdm),"jzdz_ssxqdm",jzdzSsxqdm)
                 .likeRight(StrUtil.isNotBlank(jzdzSqcjdm),"jzdz_sqcjdm",jzdzSqcjdm)
                 .likeRight(StrUtil.isNotBlank(jzdzSsjwqdm),"jzdz_ssjwqdm", jzdzSsjwqdm)
-                .like(StrUtil.isNotBlank(xm),"xm",xm));
+                .like(StrUtil.isNotBlank(xm),"xm",xm).orderByDesc("id"));
         return ResultDTO.ok_data(page);
     }
 
