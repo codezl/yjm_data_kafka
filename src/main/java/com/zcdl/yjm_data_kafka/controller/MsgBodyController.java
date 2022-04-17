@@ -24,6 +24,6 @@ public class MsgBodyController {
      */
     @PostMapping("add")
     public void add(@RequestBody @Valid MsgBodyAddDTO dto){
-        this.msgBodyService.handleMsg(dto.getMsg());
+        this.msgBodyService.handleMsg(dto.getMsg(), dto.getUuid());
     }
 }

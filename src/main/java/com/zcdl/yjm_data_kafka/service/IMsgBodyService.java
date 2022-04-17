@@ -1,5 +1,6 @@
 package com.zcdl.yjm_data_kafka.service;
 
+import com.zcdl.yjm_data_kafka.dto.MsgBodyAddDTO;
 import com.zcdl.yjm_data_kafka.model.MsgBody;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,7 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMsgBodyService extends IService<MsgBody> {
 
-    void handleMsg(String msg);
+    String handleMsg(String msg, String uuid);
 
-    void handleMsgAndForward(String msg);
+    void handleMsgAndForward(MsgBodyAddDTO dto);
 }

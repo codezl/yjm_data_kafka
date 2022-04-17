@@ -7,12 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 /**
- * <p>
- * 2.2.4.1 	实有房屋登记信息
- * </p>
- *
- * @author 
- * @since 2022-04-17
+ * 03202 实有房屋登记信息
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -196,5 +191,7 @@ public class House implements Serializable {
 
     private String sjly;
 
+    private Integer start;
 
+    private String sysId;
 }

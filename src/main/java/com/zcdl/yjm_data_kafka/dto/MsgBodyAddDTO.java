@@ -8,4 +8,6 @@ import lombok.Setter;
 public class MsgBodyAddDTO {
 
     private String msg;
+
+    private String uuid;
 }

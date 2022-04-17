@@ -13,4 +13,5 @@ import com.zcdl.yjm_data_kafka.model.House;
  */
 public interface IHouseService extends IService<House> {
 
+    void add(House house);
 }

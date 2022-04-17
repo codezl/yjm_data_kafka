@@ -7,12 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 /**
- * <p>
- * 2.2.4.9 	房屋关系人新增信息
- * </p>
- *
- * @author 
- * @since 2022-04-17
+ * 03302 房屋关系人新增信息
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -182,5 +177,7 @@ public class HouseManager implements Serializable {
     private String ssjzwxxbm;
 
     private String start;
+
+    private String sysId;
 
 }

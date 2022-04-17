@@ -13,4 +13,5 @@ import com.zcdl.yjm_data_kafka.model.HouseManager;
  */
 public interface IHouseManagerService extends IService<HouseManager> {
 
+    void add(HouseManager houseManager);
 }

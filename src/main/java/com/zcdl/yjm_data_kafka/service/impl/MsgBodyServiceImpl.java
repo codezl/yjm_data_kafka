@@ -1,12 +1,15 @@
 package com.zcdl.yjm_data_kafka.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zcdl.yjm_data_kafka.dto.MsgBodyAddDTO;
 import com.zcdl.yjm_data_kafka.dto.MsgDTO;
+import com.zcdl.yjm_data_kafka.exception.MyException;
 import com.zcdl.yjm_data_kafka.model.*;
 import com.zcdl.yjm_data_kafka.mapper.MsgBodyDao;
 import com.zcdl.yjm_data_kafka.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zcdl.yjm_data_kafka.utils.HttpUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,16 +44,22 @@ public class MsgBodyServiceImpl extends ServiceImpl<MsgBodyDao, MsgBody> impleme
     private IBuildingCheckService buildingCheckService;
     @Resource
     private MsgBodyDao msgBodyDao;
+    @Resource
+    private IHouseService houseService;
+    @Resource
+    private IHouseManagerService houseManagerService;
+
+    @Value("${forwardUrl:null}")
+    private String forwardUrl;
 
     @Override
     @Transactional
-    public void handleMsg(String msg){
+    public String handleMsg(String msg, String uuid){
         if(msg == null){
-            log.error("消费消息msgBody为null");
-            return;
+            throw new MyException("消费消息msgBody为null");
         }
         MsgBody dto = JSONObject.parseObject(msg, MsgBody.class);
-        String uuid = UUID.randomUUID().toString().replace("-", "");
+        uuid = uuid == null ? UUID.randomUUID().toString().replace("-", "") : uuid;
         String type = dto.getType();
         MsgBody msgBody = new MsgBody();
         msgBody.setMsg(msg);
@@ -59,8 +68,7 @@ public class MsgBodyServiceImpl extends ServiceImpl<MsgBodyDao, MsgBody> impleme
         msgBody.setType(type);
         msgBody.setCreateDate(LocalDateTime.now());
         if(type == null){
-            log.error("消费消息msgBody的type为null");
-            return;
+            throw new MyException("消费消息msgBody的type为null");
         }
         String data = msgBody.getMsg();
         switch (type){
@@ -80,15 +88,21 @@ public class MsgBodyServiceImpl extends ServiceImpl<MsgBodyDao, MsgBody> impleme
                 break;
 
             case "03002": // 没有记录
-                BuildingCheck buildingCheck = new BuildingCheck();
+                BuildingCheck buildingCheck = JSONObject.parseObject(data, BuildingCheck.class);
                 buildingCheck.setSysId(uuid);
                 this.buildingCheckService.add(buildingCheck);
                 break;
 
             case "03202":
+                House house = JSONObject.parseObject(data, House.class);
+                house.setSysId(uuid);
+                this.houseService.add(house);
                 break;
 
             case "03302":
+                HouseManager houseManager = JSONObject.parseObject(data, HouseManager.class);
+                houseManager.setSysId(uuid);
+                this.houseManagerService.add(houseManager);
                 break;
 
             case "03205":
@@ -98,18 +112,19 @@ public class MsgBodyServiceImpl extends ServiceImpl<MsgBodyDao, MsgBody> impleme
                 break;
 
             case "03304":
-                HouseManagerCheck houseManagerCheck = new HouseManagerCheck();
+                HouseManagerCheck houseManagerCheck = JSONObject.parseObject(data, HouseManagerCheck.class);
                 houseManagerCheck.setSysId(uuid);
                 this.houseManagerCheckService.add(houseManagerCheck);
                 break;
 
             case "03207": // 没有记录
-                HouseLogout houseLogout = new HouseLogout();
+                HouseLogout houseLogout = JSONObject.parseObject(data, HouseLogout.class);
                 houseLogout.setSysId(uuid);
                 this.houseLogoutService.add(houseLogout);
                 break;
         }
         this.msgBodyDao.insert(msgBody);
+        return uuid;
     }
 
     /**
@@ -117,10 +132,15 @@ public class MsgBodyServiceImpl extends ServiceImpl<MsgBodyDao, MsgBody> impleme
      */
     @Override
     @Transactional
-    public void handleMsgAndForward(String msg){
-        this.handleMsg(msg);
+    public void handleMsgAndForward(MsgBodyAddDTO dto){
+        String msg = dto.getMsg();
+        String uuid = this.handleMsg(msg, dto.getUuid());
         Map<String, Object> map = new HashMap<>();
         map.put("msg", msg);
-        HttpUtils.doPost("", JSONObject.toJSONString(map), null);
+        map.put("uuid", uuid);
+        if(this.forwardUrl == null){
+            throw new MyException("转发路径为空");
+        }
+        HttpUtils.doPost(this.forwardUrl, JSONObject.toJSONString(map), null);
     }
 }

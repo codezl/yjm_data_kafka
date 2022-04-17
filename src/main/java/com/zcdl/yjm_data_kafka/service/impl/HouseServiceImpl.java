@@ -6,6 +6,8 @@ import com.zcdl.yjm_data_kafka.model.House;
 import com.zcdl.yjm_data_kafka.service.IHouseService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * <p>
  * 2.2.4.1 	实有房屋登记信息 服务实现类
@@ -17,4 +19,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class HouseServiceImpl extends ServiceImpl<HouseDao, House> implements IHouseService {
 
+    @Resource
+    private HouseDao houseDao;
+
+    @Override
+    public void add(House house) {
+        this.houseDao.insert(house);
+    }
 }
