@@ -1,7 +1,13 @@
 package com.zcdl.yjm_data_kafka.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zcdl.yjm_data_kafka.dto.HouseDTO;
+import com.zcdl.yjm_data_kafka.dto.ResultDTO;
 import com.zcdl.yjm_data_kafka.model.HouseCheckFeedback;
 import com.zcdl.yjm_data_kafka.mapper.HouseCheckFeedbackDao;
+import com.zcdl.yjm_data_kafka.model.PeopleConfirm;
 import com.zcdl.yjm_data_kafka.service.IHouseCheckFeedbackService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -25,5 +31,17 @@ public class HouseCheckFeedbackServiceImpl extends ServiceImpl<HouseCheckFeedbac
     @Override
     public void add(HouseCheckFeedback houseCheckFeedback) {
         this.houseCheckFeedbackDao.insert(houseCheckFeedback);
+    }
+
+    public ResultDTO getHouseCheckFeedbacks(HouseDTO.getHouseCheckFeedbacks dto) {
+        String hsFwdzbm = dto.getHsFwdzbm();
+        String hsSsjwqdm = dto.getHsSsjwqdm();
+
+        Page<HouseCheckFeedback> page = this.page(new Page<>(dto.getPageIndex(), dto.getPageSize()),
+                new QueryWrapper<HouseCheckFeedback>()
+                .like(StrUtil.isNotBlank(hsFwdzbm), "hs_fwdzbm", hsFwdzbm)
+                 .like(StrUtil.isNotBlank(hsSsjwqdm), "hs_ssjwqdm", hsSsjwqdm));
+
+        return ResultDTO.ok_data(page);
     }
 }

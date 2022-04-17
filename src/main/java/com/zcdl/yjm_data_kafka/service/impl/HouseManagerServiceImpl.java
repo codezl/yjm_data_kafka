@@ -1,5 +1,7 @@
 package com.zcdl.yjm_data_kafka.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,6 +34,8 @@ public class HouseManagerServiceImpl extends ServiceImpl<HouseManagerDao, HouseM
 
     @Override
     public IPage<HouseManager> search(HouseManagerSearchDTO dto) {
-        return this.houseManagerDao.selectPage(new Page<>(dto.getPageIndex(), dto.getPageSize()), null);
+        String dzbm = dto.getDzbm();
+        return this.houseManagerDao.selectPage(new Page<>(dto.getPageIndex(), dto.getPageSize()),
+                new QueryWrapper<HouseManager>().like(StrUtil.isNotBlank(dzbm),"dzbm",dzbm));
     }
 }

@@ -7,11 +7,13 @@ import com.zcdl.yjm_data_kafka.service.impl.CompanyServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -31,13 +33,13 @@ public class CompanyController {
 
     @ApiOperation(position = 10, value = "单位列表")
     @PostMapping("/getCompanys")
-    public ResultDTO getCompanys(CompanyDTO.getCompanys dto){
+    public ResultDTO getCompanys(@RequestBody @Valid CompanyDTO.getCompanys dto){
         return companyService.getCompanys(dto);
     }
 
     @ApiOperation(position = 10, value = "单位数量")
     @PostMapping("/getCompanysNum")
-    public ResultDTO getCompanysNum(CompanyDTO.getCompanysNum dto){
+    public ResultDTO getCompanysNum(@RequestBody @Valid CompanyDTO.getCompanysNum dto){
         return companyService.getCompanysNum(dto);
     }
 
