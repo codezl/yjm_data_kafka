@@ -1,5 +1,6 @@
 package com.zcdl.yjm_data_kafka.controller;
 
+import com.zcdl.yjm_data_kafka.dto.HouseDTO;
 import com.zcdl.yjm_data_kafka.dto.PeopleDTO;
 import com.zcdl.yjm_data_kafka.dto.ResultDTO;
 import com.zcdl.yjm_data_kafka.service.impl.HouseServiceImpl;
@@ -25,12 +26,12 @@ public class HouseController {
 
 
     @PostMapping("/getHouses")
-    public ResultDTO getPeoples(PeopleDTO.getPeoples dto) {
+    public ResultDTO getPeoples(HouseDTO.getHouses dto) {
         return houseService.getHouses(dto);
     }
 
     @PostMapping("/getHousesNum")
-    public ResultDTO getPeoplesNum(PeopleDTO.getPeoplesNum dto) {
+    public ResultDTO getPeoplesNum(HouseDTO.getHousesNum dto) {
         return houseService.getHousesNum(dto);
     }
 }
