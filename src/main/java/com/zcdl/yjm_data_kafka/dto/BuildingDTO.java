@@ -1,22 +1,21 @@
 package com.zcdl.yjm_data_kafka.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 public class BuildingDTO {
 
     @Data
     public static class getBuilding extends PageDTO {
-
-        //地址编码
+        @ApiModelProperty(value = "地址编码", example = "123")
         private String dzbm;
-
-        // 建筑物信息编码
+        @ApiModelProperty(value = "建筑物信息编码", example = "123")
         private String jzwxxbm;
-
-        // 社区(村居)
+        @ApiModelProperty(value = "社区(村居)", example = "123")
         private String sqcjdm;
-
-        // 所属警务区
+        @ApiModelProperty(value = "所属警务区", example = "123")
         private String ssjwqdm;
     }
 }

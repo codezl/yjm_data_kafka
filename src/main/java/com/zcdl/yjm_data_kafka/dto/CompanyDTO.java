@@ -1,5 +1,6 @@
 package com.zcdl.yjm_data_kafka.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -13,13 +14,11 @@ public class CompanyDTO {
 
     @Data
     public static class getCompanys extends PageDTO{
-        // 登记单位_代码
+        @ApiModelProperty(value = "登记单位_代码", example = "123")
         private String djdwDm;
-
-        // 登记单位_公安机关机构代码
+        @ApiModelProperty(value = "登记单位_公安机关机构代码", example = "123")
         private String djdwGajgjgdm;
-
-        // 登记单位_名称
+        @ApiModelProperty(value = "登记单位_名称", example = "123")
         private String djdwMc;
     }
 

@@ -40,7 +40,7 @@ public class BuildingCheckController {
 
 
     @PostMapping("/selBuildingCheck")
-    @ApiOperation(position = 10, value = "10.建筑物列表")
+    @ApiOperation(position = 10, value = "10.查询建筑物列表")
     public ResultDTO selBuildingCheck(@RequestBody @Valid BuildingDTO.getBuilding dto) {
         QueryWrapper wrapper = new QueryWrapper<>().like("sssqcjdm", dto.getSqcjdm())
                 .like("dzbm", dto.getDzbm()).eq("ssjwqdm", dto.getSsjwqdm()).like("jzwxxbm", dto.getJzwxxbm());
@@ -50,7 +50,7 @@ public class BuildingCheckController {
 
 
     @PostMapping("/buildingCheckCount")
-    @ApiOperation(position = 20, value = "20.建筑物数量")
+    @ApiOperation(position = 20, value = "20.查询建筑物数量")
     public ResultDTO buildingCheckCount(@RequestBody @Valid BuildingDTO.getBuilding dto) {
         QueryWrapper wrapper = new QueryWrapper<>().like("sssqcjdm", dto.getSqcjdm())
                 .like("dzbm", dto.getDzbm()).like("ssjwqdm", dto.getSsjwqdm()).eq("jzwxxbm", dto.getJzwxxbm());
