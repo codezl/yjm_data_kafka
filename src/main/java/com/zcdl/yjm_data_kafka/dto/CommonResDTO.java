@@ -11,11 +11,11 @@ import lombok.Data;
 public class CommonResDTO {
 
     /**
-     * @Description: 查询警务区返回列表中实体
+     * @Description: 查询村居区返回列表中实体
      * @Date: 2022/4/17
      */
     @Data
-    public static class PoliceCommonDto {
+    public static class VillageCommonDto {
         private String dzdm;
         private String mc;
         private String dm;
@@ -29,11 +29,13 @@ public class CommonResDTO {
     }
 
     /**
-     * @Description: 查询村居返回列表中实体
+     * @Description: 查询警务区返回列表中实体
      * @Date: 2022/4/17
      */
     @Data
-    public static class villageCommonDto {
+    public static class PoliceCommonDto {
+        private Integer id;
+        private String name;
 
         private Integer num;
     }

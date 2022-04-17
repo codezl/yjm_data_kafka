@@ -31,7 +31,12 @@ public class PeopleConfirmDTO {
     }
 
     @Data
-    public static class PeopleConfirmResDTO extends PeopleLogoutDTO.CommonDto{
+    public static class PPeopleConfirmResDTO extends CommonResDTO.PoliceCommonDto{
+        private List<PeopleConfirm> peopleConfirms;
+    }
+
+    @Data
+    public static class VPeopleConfirmResDTO extends CommonResDTO.VillageCommonDto {
         private List<PeopleConfirm> peopleConfirms;
     }
 }
