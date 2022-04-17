@@ -10,6 +10,7 @@ public class StandardDTO {
 
 
     @Data
+    @Accessors(chain = true)
     public static class areaDto {
         @ApiModelProperty(notes = "类型 1公安局 2派出所 3警务区", example = "2", required = true)
         @NotNull(message = "请上传类型")
@@ -23,6 +24,7 @@ public class StandardDTO {
     }
 
     @Data
+    @Accessors(chain = true)
     public static class areaADto {
         @ApiModelProperty(value = "类型 1 区 2 街道 镇，3 村4 村小组 ", example = "1", required = true)
         @NotNull(message = "请上传类型")

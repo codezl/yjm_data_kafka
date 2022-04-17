@@ -35,4 +35,25 @@ public class PeopleDTO {
         @ApiModelProperty(value = "居住地址_所属警务区", example = "123")
         private String jzdzSsjwqdm;
     }
+
+    @Data
+    public static class getPeople extends StandardDTO.areaADto{
+//        @ApiModelProperty(value = "地址编码", example = "123")
+//        private String dzbm;
+        @ApiModelProperty(value = "人口编码", example = "123")
+        private String rkbm;
+        @ApiModelProperty(value = "社区(村居)", example = "123")
+        private String sqcjdm;
+//        @ApiModelProperty(value = "所属警务区", example = "123")
+//        private String ssjwqdm;
+    }
+
+    @Data
+    public static class getPeoplePL extends StandardDTO.areaDto{
+
+        @ApiModelProperty(value = "人口编码", example = "123")
+        private String rkbm;
+        @ApiModelProperty(value = "所属警务区", example = "123")
+        private String ssjwqdm;
+    }
 }

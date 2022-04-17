@@ -2,20 +2,29 @@ package com.zcdl.yjm_data_kafka.controller;
 
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zcdl.yjm_data_kafka.dto.PeopleDTO;
 import com.zcdl.yjm_data_kafka.dto.ResultDTO;
+import com.zcdl.yjm_data_kafka.dto.StandardDTO;
+import com.zcdl.yjm_data_kafka.helper.StandardHelper;
 import com.zcdl.yjm_data_kafka.service.impl.MsgBodyServiceImpl;
 import com.zcdl.yjm_data_kafka.service.impl.PeopleServiceImpl;
 import com.zcdl.yjm_data_kafka.utils.SaveMsgUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.xml.transform.Result;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -36,26 +45,150 @@ public class PeopleController {
     private PeopleServiceImpl peopleService;
     @Resource
     private MsgBodyServiceImpl msgBodyService;
+    @Resource
+    private StandardHelper standardHelper;
 
 
-    @GetMapping("test")
-    public String test() throws Exception {
-        String aa = "{\"msg\":\"{\\\"cyzjdm\\\":\\\"111\\\",\\\"djrSflbdm\\\":\\\"10\\\",\\\"djrXm\\\":\\\"罗孝能\\\",\\\"djrZjhm\\\":\\\"441521199408096513\\\",\\\"djsj\\\":\\\"20220414120828\\\",\\\"gjhdqdm\\\":\\\"CHN\\\",\\\"qlcrq\\\":\\\"20220414\\\",\\\"rkbm\\\":\\\"00000000000401352651\\\",\\\"rksj\\\":\\\"20220414120828\\\",\\\"sjgsdwdm\\\":\\\"441330230001\\\",\\\"sjgsdwmc\\\":\\\"441330230001\\\",\\\"sjly\\\":\\\"yjm\\\",\\\"start\\\":0,\\\"tbgxsj\\\":\\\"20220414120828\\\",\\\"xm\\\":\\\"罗孝能\\\",\\\"ywlsh\\\":\\\"1514455523666165760b\\\",\\\"zjhm\\\":\\\"441521199408096513\\\",\\\"zxlbdm\\\":\\\"2\\\"}\",\"regionCode\":\"441330230001\",\"type\":\"01011\"}";
-        String res = saveMsgUtils.savePeople(aa);
-        return "okok";
+//    @GetMapping("test")
+//    public String test() throws Exception {
+//        String aa = "{\"msg\":\"{\\\"cyzjdm\\\":\\\"111\\\",\\\"djrSflbdm\\\":\\\"10\\\",\\\"djrXm\\\":\\\"罗孝能\\\",\\\"djrZjhm\\\":\\\"441521199408096513\\\",\\\"djsj\\\":\\\"20220414120828\\\",\\\"gjhdqdm\\\":\\\"CHN\\\",\\\"qlcrq\\\":\\\"20220414\\\",\\\"rkbm\\\":\\\"00000000000401352651\\\",\\\"rksj\\\":\\\"20220414120828\\\",\\\"sjgsdwdm\\\":\\\"441330230001\\\",\\\"sjgsdwmc\\\":\\\"441330230001\\\",\\\"sjly\\\":\\\"yjm\\\",\\\"start\\\":0,\\\"tbgxsj\\\":\\\"20220414120828\\\",\\\"xm\\\":\\\"罗孝能\\\",\\\"ywlsh\\\":\\\"1514455523666165760b\\\",\\\"zjhm\\\":\\\"441521199408096513\\\",\\\"zxlbdm\\\":\\\"2\\\"}\",\"regionCode\":\"441330230001\",\"type\":\"01011\"}";
+//        String res = saveMsgUtils.savePeople(aa);
+//        return "okok";
+//    }
+//
+//    @ApiOperation(position = 10, value = "人员列表")
+//    @PostMapping("/getPeoples")
+//    public ResultDTO getPeoples(@RequestBody @Valid PeopleDTO.getPeoples dto) {
+//        return peopleService.getPeoples(dto);
+//    }
+//
+//    @ApiOperation(position = 10, value = "人员数量")
+//    @PostMapping("/getPeoplesNum")
+//    public ResultDTO getPeoplesNum(@RequestBody @Valid PeopleDTO.getPeoplesNum dto) {
+//        return peopleService.getPeoplesNum(dto);
+//    }
+
+
+    @ApiOperation(position = 10, value = "人员列表(村居)")
+    @PostMapping("/getPeoplesBycj")
+    public ResultDTO getPeoples(@RequestBody @Valid PeopleDTO.getPeople dto) {
+        StandardDTO.areaADto a = new StandardDTO.areaADto().setAreaDm(dto.getSqcjdm()).setType(dto.getType());
+        JSONObject jsonObject = standardHelper.getType(a);
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (jsonObject.getInteger("status") == 200) {
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for (Object o : jsonArray) {
+                JSONObject json = (JSONObject) JSONObject.toJSON(o);
+                Map<String, Object> map = new HashMap<>();
+                map.put("building_name", json.getString("mc"));
+                map.put("building_rec", json.getString("dm"));
+                map.put("building_address", json.getString("jwhQc"));
+
+                QueryWrapper wrapper = new QueryWrapper<>()
+                        .likeRight(!StringUtils.isEmpty(json.getString("dm")), "jzdz_sqcjdm", json.getString("dm"))
+                        .like(!StringUtils.isEmpty(dto.getRkbm()), "rkbm", dto.getRkbm());
+                List l = peopleService.list(wrapper);
+
+                map.put("peopleList",l);
+                list.add(map);
+
+            }
+            return ResultDTO.ok_data(list);
+        }
+
+        return ResultDTO.error_msg(50241, "查询失败");
     }
 
-    @ApiOperation(position = 10, value = "人员列表")
-    @PostMapping("/getPeoples")
-    public ResultDTO getPeoples(@RequestBody @Valid PeopleDTO.getPeoples dto) {
-        return peopleService.getPeoples(dto);
+    @ApiOperation(position = 10, value = "人员列表数量(村居)")
+    @PostMapping("/getPeoplesBycjNum")
+    public ResultDTO getPeoplesNum(@RequestBody @Valid PeopleDTO.getPeople dto) {
+        StandardDTO.areaADto a = new StandardDTO.areaADto().setAreaDm(dto.getSqcjdm()).setType(dto.getType());
+        JSONObject jsonObject = standardHelper.getType(a);
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (jsonObject.getInteger("status") == 200) {
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for (Object o : jsonArray) {
+                JSONObject json = (JSONObject) JSONObject.toJSON(o);
+                Map<String, Object> map = new HashMap<>();
+                map.put("building_name", json.getString("mc"));
+                map.put("building_rec", json.getString("dm"));
+                map.put("building_address", json.getString("jwhQc"));
+
+                QueryWrapper wrapper = new QueryWrapper<>()
+                        .likeRight(!StringUtils.isEmpty(json.getString("dm")), "jzdz_sqcjdm", json.getString("dm"))
+                        .like(!StringUtils.isEmpty(dto.getRkbm()), "rkbm", dto.getRkbm());
+                Integer i= peopleService.count(wrapper);
+
+                map.put("peopleSize",i);
+                list.add(map);
+
+            }
+            return ResultDTO.ok_data(list);
+        }
+
+        return ResultDTO.error_msg(50241, "查询失败");
     }
 
-    @ApiOperation(position = 10, value = "人员数量")
-    @PostMapping("/getPeoplesNum")
-    public ResultDTO getPeoplesNum(@RequestBody @Valid PeopleDTO.getPeoplesNum dto) {
-        return peopleService.getPeoplesNum(dto);
+
+    @ApiOperation(position = 10, value = "人员列表数量(警务)")
+    @PostMapping("/getPeoplesByjwNum")
+    public ResultDTO getPeoplesByjwNum(@RequestBody @Valid PeopleDTO.getPeoplePL dto) {
+        StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
+        JSONObject jsonObject = standardHelper.policeArea(a);
+        a.setArea(dto.getSsjwqdm()); a.setType(dto.getType());
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (jsonObject.getInteger("status") == 200) {
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for (Object o : jsonArray) {
+                JSONObject json = (JSONObject) JSONObject.toJSON(o);
+                Map<String, Object> map = new HashMap<>();
+                map.put("police_name", json.getString("name"));
+                map.put("police_rec", json.getString("id"));
+                QueryWrapper wrapper = new QueryWrapper<>()
+                        .likeRight(!StringUtils.isEmpty(json.getString("id")), "jzdz_ssjwqdm",
+                                json.getString("id").replaceAll("0+$", ""))
+                        .like(!StringUtils.isEmpty(dto.getRkbm()), "rkbm", dto.getRkbm());
+
+                map.put("peopleSize", peopleService.count(wrapper));
+                list.add(map);
+
+            }
+            return ResultDTO.ok_data(list);
+        }
+
+        return ResultDTO.error_msg(50241, "查询失败");
     }
+
+
+    @ApiOperation(position = 10, value = "人员列表(警务)")
+    @PostMapping("/getPeoplesByjw")
+    public ResultDTO getPeoplesByjw(@RequestBody @Valid PeopleDTO.getPeoplePL dto) {
+        StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
+        JSONObject jsonObject = standardHelper.policeArea(a);
+        a.setArea(dto.getSsjwqdm()); a.setType(dto.getType());
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (jsonObject.getInteger("status") == 200) {
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for (Object o : jsonArray) {
+                JSONObject json = (JSONObject) JSONObject.toJSON(o);
+                Map<String, Object> map = new HashMap<>();
+                map.put("police_name", json.getString("name"));
+                map.put("police_rec", json.getString("id"));
+                QueryWrapper wrapper = new QueryWrapper<>()
+                        .likeRight(!StringUtils.isEmpty(json.getString("id")), "jzdz_ssjwqdm",
+                                json.getString("id").replaceAll("0+$", ""))
+                        .like(!StringUtils.isEmpty(dto.getRkbm()), "rkbm", dto.getRkbm());
+
+                map.put("peopleList", peopleService.list(wrapper));
+                list.add(map);
+
+            }
+            return ResultDTO.ok_data(list);
+        }
+
+        return ResultDTO.error_msg(50241, "查询失败");
+    }
+
 
 
 
