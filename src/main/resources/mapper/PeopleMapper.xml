@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zcdl.yjm_data_kafka.mapper.PeopleDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zcdl.yjm_data_kafka.model.People">
+        <id column="id" property="id" />
+        <result column="rkbm" property="rkbm" />
+        <result column="xm" property="xm" />
+        <result column="gjhdqdm" property="gjhdqdm" />
+        <result column="cyzjdm" property="cyzjdm" />
+        <result column="zjhm" property="zjhm" />
+        <result column="wwx" property="wwx" />
+        <result column="wwm" property="wwm" />
+        <result column="csrq" property="csrq" />
+        <result column="xbdm" property="xbdm" />
+        <result column="mzdm" property="mzdm" />
+        <result column="rxbsh" property="rxbsh" />
+        <result column="lxdh" property="lxdh" />
+        <result column="zy" property="zy" />
+        <result column="zylbdm" property="zylbdm" />
+        <result column="hjdz_ssxqdm" property="hjdzSsxqdm" />
+        <result column="hjdz_dzbm" property="hjdzDzbm" />
+        <result column="hjdz_dzmc" property="hjdzDzmc" />
+        <result column="hjdz_cxfldm" property="hjdzCxfldm" />
+        <result column="jzdz_dzbm" property="jzdzDzbm" />
+        <result column="jzdz_ssxqdm" property="jzdzSsxqdm" />
+        <result column="jzdz_sqcjdm" property="jzdzSqcjdm" />
+        <result column="jzdz_cxfldm" property="jzdzCxfldm" />
+        <result column="jzdz_dzmc" property="jzdzDzmc" />
+        <result column="jzdz_ssjwqdm" property="jzdzSsjwqdm" />
+        <result column="zjzsydm" property="zjzsydm" />
+        <result column="zjzcsfldm" property="zjzcsfldm" />
+        <result column="nlkrq" property="nlkrq" />
+        <result column="zhlbdm" property="zhlbdm" />
+        <result column="jcjzdbs" property="jcjzdbs" />
+        <result column="zzlxdm" property="zzlxdm" />
+        <result column="dzzdjlxdm" property="dzzdjlxdm" />
+        <result column="rhyzbs" property="rhyzbs" />
+        <result column="qyfwdm" property="qyfwdm" />
+        <result column="smrzbs" property="smrzbs" />
+        <result column="qlrrq" property="qlrrq" />
+        <result column="qlcrq" property="qlcrq" />
+        <result column="jznxjs_qsrq" property="jznxjsQsrq" />
+        <result column="djdw_dm" property="djdwDm" />
+        <result column="djdw_gajgjgdm" property="djdwGajgjgdm" />
+        <result column="djdw_mc" property="djdwMc" />
+        <result column="djr_xm" property="djrXm" />
+        <result column="djr_zjhm" property="djrZjhm" />
+        <result column="djr_sflbdm" property="djrSflbdm" />
+        <result column="djsj" property="djsj" />
+        <result column="gxsj" property="gxsj" />
+        <result column="zxdw_dm" property="zxdwDm" />
+        <result column="zxdw_gajgjgdm" property="zxdwGajgjgdm" />
+        <result column="zxdw_mc" property="zxdwMc" />
+        <result column="zxr_xm" property="zxrXm" />
+        <result column="zxr_gmsfhm" property="zxrGmsfhm" />
+        <result column="rkglzxlbdm" property="rkglzxlbdm" />
+        <result column="zxsj" property="zxsj" />
+        <result column="zaxxhjlydm" property="zaxxhjlydm" />
+        <result column="rksj" property="rksj" />
+        <result column="rkgxsj" property="rkgxsj" />
+        <result column="tbgxsj" property="tbgxsj" />
+        <result column="sjcsdwdm" property="sjcsdwdm" />
+        <result column="sjcsdwmc" property="sjcsdwmc" />
+        <result column="sjlydm" property="sjlydm" />
+        <result column="sjgsdwdm" property="sjgsdwdm" />
+        <result column="sjgsdwmc" property="sjgsdwmc" />
+    </resultMap>
+
+</mapper>
