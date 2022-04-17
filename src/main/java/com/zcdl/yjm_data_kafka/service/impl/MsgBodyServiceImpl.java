@@ -48,6 +48,8 @@ public class MsgBodyServiceImpl extends ServiceImpl<MsgBodyDao, MsgBody> impleme
     private IHouseService houseService;
     @Resource
     private IHouseManagerService houseManagerService;
+    @Resource
+    private IPeopleLogoutService peopleLogoutService;
 
     @Value("${forwardUrl:null}")
     private String forwardUrl;
@@ -73,6 +75,9 @@ public class MsgBodyServiceImpl extends ServiceImpl<MsgBodyDao, MsgBody> impleme
         String data = msgBody.getMsg();
         switch (type){
             case "01001":
+                People people = JSONObject.parseObject(data, People.class);
+                people.setSysId(uuid);
+                this.peopleService.add(people);
                 break;
 
             case "01006":
@@ -82,9 +87,9 @@ public class MsgBodyServiceImpl extends ServiceImpl<MsgBodyDao, MsgBody> impleme
                 break;
 
             case "01011":
-                People people = JSONObject.parseObject(data, People.class);
-                people.setSysId(uuid);
-                this.peopleService.add(people);
+                PeopleLogout peopleLogout = JSONObject.parseObject(data, PeopleLogout.class);
+                peopleLogout.setSysId(uuid);
+                this.peopleLogoutService.add(peopleLogout);
                 break;
 
             case "03002": // 没有记录

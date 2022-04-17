@@ -1,7 +1,5 @@
 package com.zcdl.yjm_data_kafka.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import lombok.Data;
@@ -9,17 +7,21 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 01001 实有人口-住址信息
+ * <p>
+ * 实有人口-住址信息
+ * </p>
+ *
+ * @author 
+ * @since 2022-04-17
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("people")
-public class People implements Serializable {
+@TableName("people_logout")
+public class PeopleLogout implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -332,11 +334,19 @@ public class People implements Serializable {
      */
     private String sysId;
 
+    /**
+     * 推送系统
+     */
     private String sjly;
 
+    /**
+     * 业务流水号
+     */
     private String ywlsh;
 
     private String zxlbdm;
 
-    private Integer start;
+    private String start;
+
+
 }
