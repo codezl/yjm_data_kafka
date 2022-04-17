@@ -1,6 +1,8 @@
 package com.zcdl.yjm_data_kafka.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zcdl.yjm_data_kafka.dto.HouseManagerSearchDTO;
 import com.zcdl.yjm_data_kafka.model.HouseManager;
 
 /**
@@ -14,4 +16,6 @@ import com.zcdl.yjm_data_kafka.model.HouseManager;
 public interface IHouseManagerService extends IService<HouseManager> {
 
     void add(HouseManager houseManager);
+
+    IPage<HouseManager> search(HouseManagerSearchDTO dto);
 }
