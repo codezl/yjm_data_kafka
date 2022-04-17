@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zcdl.yjm_data_kafka.mapper.CompanyDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zcdl.yjm_data_kafka.model.Company">
+        <id column="id" property="id" />
+        <result column="ywlsh" property="ywlsh" />
+        <result column="dwbm" property="dwbm" />
+        <result column="dwmc" property="dwmc" />
+        <result column="dwywmc" property="dwywmc" />
+        <result column="dwywsx" property="dwywsx" />
+        <result column="dwtyshxydm" property="dwtyshxydm" />
+        <result column="dwmgstyshxydm" property="dwmgstyshxydm" />
+        <result column="dwmgsmc" property="dwmgsmc" />
+        <result column="sjzg_dwmc" property="sjzgDwmc" />
+        <result column="jjlxdm" property="jjlxdm" />
+        <result column="hylbdm" property="hylbdm" />
+        <result column="kyrq" property="kyrq" />
+        <result column="tyrq" property="tyrq" />
+        <result column="jyfwzy" property="jyfwzy" />
+        <result column="jyfwjy" property="jyfwjy" />
+        <result column="jyfs" property="jyfs" />
+        <result column="yyzzyxq_qsrq" property="yyzzyxqQsrq" />
+        <result column="yyzzyxq_jzrq" property="yyzzyxqJzrq" />
+        <result column="zczb" property="zczb" />
+        <result column="lxdh" property="lxdh" />
+        <result column="wz" property="wz" />
+        <result column="zddwbs" property="zddwbs" />
+        <result column="djdw_dm" property="djdwDm" />
+        <result column="djdw_gajgjgdm" property="djdwGajgjgdm" />
+        <result column="djdw_mc" property="djdwMc" />
+        <result column="djr_xm" property="djrXm" />
+        <result column="djr_zjhm" property="djrZjhm" />
+        <result column="djr_sflbdm" property="djrSflbdm" />
+        <result column="djsj" property="djsj" />
+        <result column="rksj" property="rksj" />
+        <result column="rkgxsj" property="rkgxsj" />
+        <result column="tbgxsj" property="tbgxsj" />
+        <result column="sjcsdwdm" property="sjcsdwdm" />
+        <result column="sjcsdwmc" property="sjcsdwmc" />
+        <result column="sjlydm" property="sjlydm" />
+        <result column="sjgsdwmc" property="sjgsdwmc" />
+        <result column="sjgsdwdm" property="sjgsdwdm" />
+    </resultMap>
+
+</mapper>
