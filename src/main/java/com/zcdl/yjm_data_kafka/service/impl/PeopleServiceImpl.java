@@ -42,7 +42,7 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements
 
         Page<People> page = this.page(new Page<>(dto.getPageIndex(), dto.getPageSize()), new QueryWrapper<People>()
                 .eq(StrUtil.isNotBlank(jzdzDzbm),"jzdz_dzbm", jzdzDzbm).likeRight(StrUtil.isNotBlank(jzdzSsxqdm),"jzdz_ssxqdm",jzdzSsxqdm)
-                .likeRight(StrUtil.isNotBlank(jzdzSqcjdm),"jzdz_sqcjdm",jzdzSqcjdm)
+                .likeRight(StrUtil.isNotBlank(jzdzSqcjdm),"jzdz_sqcjdm",jzdzSqcjdm.replaceAll("0+$", ""))
                 .likeRight(StrUtil.isNotBlank(jzdzSsjwqdm),"jzdz_ssjwqdm", jzdzSsjwqdm)
                 .like(StrUtil.isNotBlank(xm),"xm",xm).orderByDesc("id"));
         return ResultDTO.ok_data(page);
