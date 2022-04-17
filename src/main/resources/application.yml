@@ -49,3 +49,6 @@ spring:
 #        security.protocol: SASL_PLAINTEXT
 #        sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="devlogs" password="zcdldevlogspassword";
 #        connections.max.idle.ms: -1
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

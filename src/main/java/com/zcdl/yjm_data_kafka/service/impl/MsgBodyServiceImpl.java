@@ -72,7 +72,7 @@ public class MsgBodyServiceImpl extends ServiceImpl<MsgBodyDao, MsgBody> impleme
         if(type == null){
             throw new MyException("消费消息msgBody的type为null");
         }
-        String data = msgBody.getMsg();
+        String data = dto.getMsg();
         switch (type){
             case "01001":
                 People people = JSONObject.parseObject(data, People.class);
