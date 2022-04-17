@@ -7,12 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * <p>
- * 实有人口-住址信息
- * </p>
- *
- * @author 
- * @since 2022-04-17
+ * 01011 实有人口-注销信息
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
