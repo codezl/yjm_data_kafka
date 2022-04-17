@@ -42,7 +42,7 @@ public class HouseDTO {
     }
 
     @Data
-    public static class getHouseCheckFeedbacks{
+    public static class getHouseCheckFeedbacksByCP{
 
         @ApiModelProperty(value = "核实_所属警务区", example = "")
         private String hsSsjwqdm;
@@ -97,4 +97,36 @@ public class HouseDTO {
         @ApiModelProperty(notes = "警务编码")
         private String ssjwqdm;
     }
+
+    @Data
+    public static class getHouseCheckFeedbacks extends PageDTO{
+        @ApiModelProperty(notes = "房屋信息编码")
+        private String fwxxbm;
+
+        @ApiModelProperty(notes = "核实_房屋地址编码")
+        private String hsFwdzbm;
+
+        @ApiModelProperty(notes = "核实_所属警务区")
+        private String hsSsjwqdm;
+    }
+
+
+    @Data
+    public static class getHousesBycjORpl {
+
+        @ApiModelProperty(notes = "房屋信息编码")
+        private String fwxxbm;
+
+        @ApiModelProperty(notes = "警务编码")
+        private String ssjwqdm;
+
+        @ApiModelProperty(value = "社区(村居)", example = "123")
+        private String jzdzSqcjdm;
+
+        @ApiModelProperty(notes = "村居类型 1 区 2 街道 镇，3 村4 村小组 \n 警务类型 1公安局 2派出所 3警务区", example = "2", required = true)
+        @NotNull(message = "请上传类型")
+        Integer type;
+    }
+
+
 }

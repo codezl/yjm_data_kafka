@@ -43,9 +43,17 @@ public class HouseCheckFeedbackController {
     @Resource
     private StandardHelper standardHelper;
 
-    @ApiOperation(value = "房屋核实反馈信息(警务)")
-    @PostMapping("/getHouseCheckFeedbacks")
+
+    @ApiOperation(value = "房屋核实反馈信息")
+    @PostMapping("/getHouseCheckFeedbacksB")
     private ResultDTO getHouseCheckFeedbacks(@RequestBody @Valid HouseDTO.getHouseCheckFeedbacks dto){
+        return houseCheckFeedbackService.houseCheckFeedbackService(dto);
+    }
+
+
+    @ApiOperation(value = "房屋核实反馈信息(警务)")
+    @PostMapping("/getHouseCheckFeedbacksByCP")
+    private ResultDTO getHouseCheckFeedbacks(@RequestBody @Valid HouseDTO.getHouseCheckFeedbacksByCP dto){
         StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getHsSsjwqdm()); a.setType(dto.getType());
         JSONObject jsonObject = standardHelper.policeArea(a);
         List<Map<String, Object>> list = new ArrayList<>();

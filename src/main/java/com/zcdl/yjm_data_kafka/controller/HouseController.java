@@ -1,5 +1,6 @@
 package com.zcdl.yjm_data_kafka.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -9,6 +10,7 @@ import com.zcdl.yjm_data_kafka.helper.StandardHelper;
 import com.zcdl.yjm_data_kafka.model.BuildingCheck;
 import com.zcdl.yjm_data_kafka.model.House;
 import com.zcdl.yjm_data_kafka.service.impl.HouseServiceImpl;
+import com.zcdl.yjm_data_kafka.utils.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.StringUtils;
@@ -54,70 +56,63 @@ public class HouseController {
         return ResultDTO.ok_data(buildingCheckPage);
     }
 
-    @ApiOperation(position = 10, value = "房屋列表(村居)")
-    @PostMapping("/getHousesBycj")
-    public ResultDTO getPeoples(@RequestBody @Valid HouseDTO.getHousesBycj dto) {
-        StandardDTO.areaADto a = new StandardDTO.areaADto().setAreaDm(dto.getJzdzSqcjdm()).setType(dto.getType());
-        JSONObject jsonObject = standardHelper.getType(a);
+
+
+    @ApiOperation(position = 10, value = "房屋列表(村居/警务)")
+    @PostMapping("/getHousesBycjORpl")
+    public ResultDTO getHousesBycjORpl(@RequestBody @Valid HouseDTO.getHousesBycjORpl dto) {
+        String ssjwqdm = dto.getSsjwqdm();
+        String jzdzSqcjdm = dto.getJzdzSqcjdm();
+
+        if (StrUtil.isBlank(ssjwqdm) && StrUtil.isBlank(jzdzSqcjdm))return ResultDTO.error_msg(50242, "警务编号和村居编号必须有一个");
+
         List<Map<String, Object>> list = new ArrayList<>();
-        System.out.println(jsonObject.getInteger("status"));
-        if (jsonObject.getInteger("status") == 200) {
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (Object o : jsonArray) {
-                JSONObject json = (JSONObject) JSONObject.toJSON(o);
-                Map<String, Object> map = new HashMap<>();
-                map.put("building_name", json.getString("mc"));
-                map.put("building_rec", json.getString("dm"));
-                map.put("building_address", json.getString("jwhQc"));
+        // 村居
+        if (StrUtil.isNotBlank(jzdzSqcjdm)){
+            StandardDTO.areaADto a = new StandardDTO.areaADto().setAreaDm(dto.getJzdzSqcjdm()).setType(dto.getType());
+            JSONObject jsonObject = standardHelper.getType(a);
+            if (jsonObject.getInteger("status") == 200) {
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                for (Object o : jsonArray) {
+                    JSONObject json = (JSONObject) JSONObject.toJSON(o);
+                    Map<String, Object> map = CommonUtils.putCJMap(json);
+                    QueryWrapper wrapper = new QueryWrapper<>()
+                            .likeRight(!StringUtils.isEmpty(json.getString("dm")), "sssqcjdm", json.getString("dm"))
+                            .like(!StringUtils.isEmpty(dto.getFwxxbm()), "fwxxbm", dto.getFwxxbm());
+                    List l = houseService.list(wrapper);
 
-                QueryWrapper wrapper = new QueryWrapper<>()
-                        .likeRight(!StringUtils.isEmpty(json.getString("dm")), "sssqcjdm", json.getString("dm"))
-                        .like(!StringUtils.isEmpty(dto.getFwxxbm()), "fwxxbm", dto.getFwxxbm());
-                List l = houseService.list(wrapper);
+                    map.put("houseList", l);
+                    map.put("count",l.size());
+                    list.add(map);
 
-                map.put("houseList", l);
-                map.put("count",l.size());
-                list.add(map);
-
+                }
+                return ResultDTO.ok_data(list);
             }
-            return ResultDTO.ok_data(list);
+        }else {
+            // 警务
+            StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
+            JSONObject jsonObject = standardHelper.policeArea(a);
+            if (jsonObject.getInteger("status") == 200) {
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                for (Object o : jsonArray) {
+                    JSONObject json = (JSONObject) JSONObject.toJSON(o);
+                    Map<String, Object> map = CommonUtils.putCJMap(json);
+
+                    QueryWrapper wrapper = new QueryWrapper<>()
+                            .likeRight(!StringUtils.isEmpty(json.getString("id")), "ssjwqdm",
+                                    json.getString("id").replaceAll("0+$", ""))
+                            .like(!StringUtils.isEmpty(dto.getFwxxbm()), "fwxxbm", dto.getFwxxbm());
+                    List l = houseService.list(wrapper);
+                    map.put("houseList", l);
+                    map.put("count",l.size());
+                    list.add(map);
+                }
+                return ResultDTO.ok_data(list);
+            }
         }
         return ResultDTO.error_msg(50241, "查询失败");
     }
 
-
-    @ApiOperation(position = 10, value = "房屋列表(警务)")
-    @PostMapping("/getHousesByjw")
-    public ResultDTO getHousesByjw(@RequestBody @Valid HouseDTO.getHousesByjw dto) {
-        StandardDTO.areaDto a = new StandardDTO.areaDto();
-        a.setArea(dto.getSsjwqdm()); a.setType(dto.getType());
-        JSONObject jsonObject = standardHelper.policeArea(a);
-        List<Map<String, Object>> list = new ArrayList<>();
-        if (jsonObject.getInteger("status") == 200) {
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (Object o : jsonArray) {
-                JSONObject json = (JSONObject) JSONObject.toJSON(o);
-                Map<String, Object> map = new HashMap<>();
-                map.put("police_name", json.getString("name"));
-                map.put("police_rec", json.getString("id"));
-
-                QueryWrapper wrapper = new QueryWrapper<>()
-                        .likeRight(!StringUtils.isEmpty(json.getString("id")), "sssqcjdm",
-                                json.getString("id").replaceAll("0+$", ""))
-                        .like(!StringUtils.isEmpty(dto.getFwxxbm()), "fwxxbm", dto.getFwxxbm());
-
-
-                List l = houseService.list(wrapper);
-
-                map.put("houseList", l);
-                map.put("count",l.size());
-                list.add(map);
-
-            }
-            return ResultDTO.ok_data(list);
-        }
-        return ResultDTO.error_msg(50241, "查询失败");
-    }
 
 
 }
