@@ -37,10 +37,13 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements
         String jzdzSsxqdm = dto.getJzdzSsxqdm();
         String jzdzSqcjdm = dto.getJzdzSqcjdm();
         String jzdzSsjwqdm = dto.getJzdzSsjwqdm();
+        String xm = dto.getXm();
+
         Page<People> page = this.page(new Page<>(dto.getPageIndex(), dto.getPageSize()), new QueryWrapper<People>()
                 .eq(StrUtil.isNotBlank(jzdzDzbm),"jzdz_dzbm", jzdzDzbm).likeRight(StrUtil.isNotBlank(jzdzSsxqdm),"jzdz_ssxqdm",jzdzSsxqdm)
                 .likeRight(StrUtil.isNotBlank(jzdzSqcjdm),"jzdz_sqcjdm",jzdzSqcjdm)
-                .likeRight(StrUtil.isNotBlank(jzdzSsjwqdm),"jzdz_ssjwqdm", jzdzSsjwqdm));
+                .likeRight(StrUtil.isNotBlank(jzdzSsjwqdm),"jzdz_ssjwqdm", jzdzSsjwqdm)
+                .like(StrUtil.isNotBlank(xm),"xm",xm));
         return ResultDTO.ok_data(page);
     }
 
