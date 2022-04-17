@@ -10,6 +10,7 @@ import com.zcdl.yjm_data_kafka.helper.StandardHelper;
 import com.zcdl.yjm_data_kafka.model.BuildingCheck;
 import com.zcdl.yjm_data_kafka.model.House;
 import com.zcdl.yjm_data_kafka.service.impl.HouseServiceImpl;
+import com.zcdl.yjm_data_kafka.utils.CommonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.StringUtils;

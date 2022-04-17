@@ -162,7 +162,7 @@ public class BuildingCheckController {
                 }
                 return ResultDTO.ok_data(list);
             }
-        } else if (!StringUtils.isEmpty(dto.getSqcjdm())) {
+        } else {
             StandardDTO.areaADto a = new StandardDTO.areaADto().setType(dto.getType()).setAreaDm(dto.getSqcjdm());
             JSONObject jsonObject = standardHelper.getType(a);
             if (jsonObject.getInteger("status") == 200) {
