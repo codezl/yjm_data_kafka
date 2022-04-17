@@ -3,11 +3,11 @@ package com.zcdl.yjm_data_kafka.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zcdl.yjm_data_kafka.dto.HouseDTO;
-import com.zcdl.yjm_data_kafka.dto.PeopleDTO;
-import com.zcdl.yjm_data_kafka.dto.ResultDTO;
-import com.zcdl.yjm_data_kafka.dto.StandardDTO;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zcdl.yjm_data_kafka.dto.*;
 import com.zcdl.yjm_data_kafka.helper.StandardHelper;
+import com.zcdl.yjm_data_kafka.model.BuildingCheck;
+import com.zcdl.yjm_data_kafka.model.House;
 import com.zcdl.yjm_data_kafka.service.impl.HouseServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,6 +41,18 @@ public class HouseController {
     @Resource
     private StandardHelper standardHelper;
 
+
+    @PostMapping("/selHouse")
+    @ApiOperation(position = 1, value = "1.查询建筑物列表")
+    public ResultDTO selBuildingCheck(@RequestBody @Valid HouseDTO.houseDto dto) {
+        QueryWrapper wrapper = new QueryWrapper<>().eq(!StringUtils.isEmpty(dto.getDzbm()),
+                "dzbm", dto.getDzbm())
+                .likeRight(!StringUtils.isEmpty(dto.getSspcsdm()), "sspcsdm", dto.getSspcsdm())
+                .likeRight(!StringUtils.isEmpty(dto.getSsjwqdm()), "ssjwqdm", dto.getSsjwqdm())
+                .likeRight(!StringUtils.isEmpty(dto.getSssqcjdm()), "sssqcjdm", dto.getSssqcjdm());
+        Page<House> buildingCheckPage = houseService.page(new Page<>(dto.getPageIndex(), dto.getPageSize()), wrapper);
+        return ResultDTO.ok_data(buildingCheckPage);
+    }
 
     @ApiOperation(position = 10, value = "房屋列表(村居)")
     @PostMapping("/getHousesBycj")
@@ -159,7 +171,6 @@ public class HouseController {
         }
         return ResultDTO.error_msg(50241, "查询失败");
     }
-
 
 
 }

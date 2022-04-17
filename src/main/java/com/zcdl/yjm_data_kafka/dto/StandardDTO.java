@@ -34,4 +34,5 @@ public class StandardDTO {
         @ApiModelProperty(value = "类型编码", example = "类型编码")
         String areaDm;
     }
+
 }

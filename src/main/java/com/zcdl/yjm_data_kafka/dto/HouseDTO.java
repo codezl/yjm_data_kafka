@@ -2,6 +2,7 @@ package com.zcdl.yjm_data_kafka.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class HouseDTO {
 
     @Data
-    public static class getHouses extends PageDTO{
+    public static class getHouses extends PageDTO {
 
         // 户籍地址_地址编码
         @ApiModelProperty(notes = "户籍地址_地址编码")
@@ -41,12 +42,27 @@ public class HouseDTO {
     }
 
     @Data
-    public static class getHouseCheckFeedbacks extends PageDTO{
+    public static class getHouseCheckFeedbacks extends PageDTO {
         @ApiModelProperty(value = "核实_房屋地址编码", example = "123")
         private String hsFwdzbm;
 
         @ApiModelProperty(value = "核实_所属警务区", example = "123")
         private String hsSsjwqdm;
+    }
+
+    @Data
+    @Accessors(chain = true)
+    public static class houseDto {
+        @ApiModelProperty(value = "地址编码", example = "地址编码")
+        private String dzbm;
+        @ApiModelProperty(value = "所属社区(村居)", example = "所属社区(村居)")
+        private String sssqcjdm;
+        @ApiModelProperty(value = "所属派出所", example = "所属派出所")
+        private String sspcsdm;
+        @ApiModelProperty(value = "所属警务区", example = "所属警务区")
+        private String ssjwqdm;
+        private Integer pageSize;
+        private Integer pageIndex;
     }
 
     @Data

@@ -38,9 +38,9 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements
         String jzdzSqcjdm = dto.getJzdzSqcjdm();
         String jzdzSsjwqdm = dto.getJzdzSsjwqdm();
         Page<People> page = this.page(new Page<>(dto.getPageIndex(), dto.getPageSize()), new QueryWrapper<People>()
-                .like(StrUtil.isNotBlank(jzdzDzbm),"jzdz_dzbm", jzdzDzbm).like(StrUtil.isNotBlank(jzdzSsxqdm),"jzdz_ssxqdm",jzdzSsxqdm)
-                .like(StrUtil.isNotBlank(jzdzSqcjdm),"jzdz_sqcjdm",jzdzSqcjdm)
-                .like(StrUtil.isNotBlank(jzdzSsjwqdm),"jzdz_ssjwqdm", jzdzSsjwqdm));
+                .eq(StrUtil.isNotBlank(jzdzDzbm),"jzdz_dzbm", jzdzDzbm).likeRight(StrUtil.isNotBlank(jzdzSsxqdm),"jzdz_ssxqdm",jzdzSsxqdm)
+                .likeRight(StrUtil.isNotBlank(jzdzSqcjdm),"jzdz_sqcjdm",jzdzSqcjdm)
+                .likeRight(StrUtil.isNotBlank(jzdzSsjwqdm),"jzdz_ssjwqdm", jzdzSsjwqdm));
         return ResultDTO.ok_data(page);
     }
 
@@ -50,8 +50,8 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements
         String jzdzSqcjdm = dto.getJzdzSqcjdm();
         String jzdzSsjwqdm = dto.getJzdzSsjwqdm();
         return ResultDTO.ok_data(new JSONObject().fluentPut("count",this.count(new QueryWrapper<People>()
-                .like(StrUtil.isNotBlank(jzdzDzbm),"jzdz_dzbm", jzdzDzbm).like(StrUtil.isNotBlank(jzdzSsxqdm),"jzdz_ssxqdm",jzdzSsxqdm)
-                .like(StrUtil.isNotBlank(jzdzSqcjdm),"jzdz_sqcjdm",jzdzSqcjdm)
-                .like(StrUtil.isNotBlank(jzdzSsjwqdm),"jzdz_ssjwqdm", jzdzSsjwqdm))));
+                .eq(StrUtil.isNotBlank(jzdzDzbm),"jzdz_dzbm", jzdzDzbm).like(StrUtil.isNotBlank(jzdzSsxqdm),"jzdz_ssxqdm",jzdzSsxqdm)
+                .likeRight(StrUtil.isNotBlank(jzdzSqcjdm),"jzdz_sqcjdm",jzdzSqcjdm)
+                .likeRight(StrUtil.isNotBlank(jzdzSsjwqdm),"jzdz_ssjwqdm", jzdzSsjwqdm))));
     }
 }

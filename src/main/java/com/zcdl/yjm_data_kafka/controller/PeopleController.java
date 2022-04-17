@@ -4,10 +4,14 @@ package com.zcdl.yjm_data_kafka.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zcdl.yjm_data_kafka.dto.BuildingDTO;
 import com.zcdl.yjm_data_kafka.dto.PeopleDTO;
 import com.zcdl.yjm_data_kafka.dto.ResultDTO;
 import com.zcdl.yjm_data_kafka.dto.StandardDTO;
 import com.zcdl.yjm_data_kafka.helper.StandardHelper;
+import com.zcdl.yjm_data_kafka.model.BuildingCheck;
+import com.zcdl.yjm_data_kafka.model.People;
 import com.zcdl.yjm_data_kafka.service.impl.MsgBodyServiceImpl;
 import com.zcdl.yjm_data_kafka.service.impl.PeopleServiceImpl;
 import com.zcdl.yjm_data_kafka.utils.SaveMsgUtils;
@@ -48,28 +52,20 @@ public class PeopleController {
     @Resource
     private StandardHelper standardHelper;
 
+    @ApiOperation(position = 10, value = "人员列表")
+    @PostMapping("/getPeoples")
+    public ResultDTO getPeoples(@RequestBody @Valid PeopleDTO.getPeoples dto) {
+        return peopleService.getPeoples(dto);
+    }
 
-//    @GetMapping("test")
-//    public String test() throws Exception {
-//        String aa = "{\"msg\":\"{\\\"cyzjdm\\\":\\\"111\\\",\\\"djrSflbdm\\\":\\\"10\\\",\\\"djrXm\\\":\\\"罗孝能\\\",\\\"djrZjhm\\\":\\\"441521199408096513\\\",\\\"djsj\\\":\\\"20220414120828\\\",\\\"gjhdqdm\\\":\\\"CHN\\\",\\\"qlcrq\\\":\\\"20220414\\\",\\\"rkbm\\\":\\\"00000000000401352651\\\",\\\"rksj\\\":\\\"20220414120828\\\",\\\"sjgsdwdm\\\":\\\"441330230001\\\",\\\"sjgsdwmc\\\":\\\"441330230001\\\",\\\"sjly\\\":\\\"yjm\\\",\\\"start\\\":0,\\\"tbgxsj\\\":\\\"20220414120828\\\",\\\"xm\\\":\\\"罗孝能\\\",\\\"ywlsh\\\":\\\"1514455523666165760b\\\",\\\"zjhm\\\":\\\"441521199408096513\\\",\\\"zxlbdm\\\":\\\"2\\\"}\",\"regionCode\":\"441330230001\",\"type\":\"01011\"}";
-//        String res = saveMsgUtils.savePeople(aa);
-//        return "okok";
-//    }
-//
-//    @ApiOperation(position = 10, value = "人员列表")
-//    @PostMapping("/getPeoples")
-//    public ResultDTO getPeoples(@RequestBody @Valid PeopleDTO.getPeoples dto) {
-//        return peopleService.getPeoples(dto);
-//    }
-//
-//    @ApiOperation(position = 10, value = "人员数量")
-//    @PostMapping("/getPeoplesNum")
-//    public ResultDTO getPeoplesNum(@RequestBody @Valid PeopleDTO.getPeoplesNum dto) {
-//        return peopleService.getPeoplesNum(dto);
-//    }
+    @ApiOperation(position = 20, value = "人员数量")
+    @PostMapping("/getPeoplesNum")
+    public ResultDTO getPeoplesNum(@RequestBody @Valid PeopleDTO.getPeoplesNum dto) {
+        return peopleService.getPeoplesNum(dto);
+    }
 
 
-    @ApiOperation(position = 10, value = "人员列表(村居)")
+    @ApiOperation(position = 30, value = "人员列表(村居)")
     @PostMapping("/getPeoplesBycj")
     public ResultDTO getPeoples(@RequestBody @Valid PeopleDTO.getPeople dto) {
         StandardDTO.areaADto a = new StandardDTO.areaADto().setAreaDm(dto.getSqcjdm()).setType(dto.getType());
@@ -89,7 +85,7 @@ public class PeopleController {
                         .like(!StringUtils.isEmpty(dto.getRkbm()), "rkbm", dto.getRkbm());
                 List l = peopleService.list(wrapper);
 
-                map.put("peopleList",l);
+                map.put("peopleList", l);
                 list.add(map);
 
             }
@@ -99,7 +95,7 @@ public class PeopleController {
         return ResultDTO.error_msg(50241, "查询失败");
     }
 
-    @ApiOperation(position = 10, value = "人员列表数量(村居)")
+    @ApiOperation(position = 40, value = "人员列表数量(村居)")
     @PostMapping("/getPeoplesBycjNum")
     public ResultDTO getPeoplesNum(@RequestBody @Valid PeopleDTO.getPeople dto) {
         StandardDTO.areaADto a = new StandardDTO.areaADto().setAreaDm(dto.getSqcjdm()).setType(dto.getType());
@@ -113,15 +109,13 @@ public class PeopleController {
                 map.put("building_name", json.getString("mc"));
                 map.put("building_rec", json.getString("dm"));
                 map.put("building_address", json.getString("jwhQc"));
-
                 QueryWrapper wrapper = new QueryWrapper<>()
                         .likeRight(!StringUtils.isEmpty(json.getString("dm")), "jzdz_sqcjdm", json.getString("dm"))
                         .like(!StringUtils.isEmpty(dto.getRkbm()), "rkbm", dto.getRkbm());
-                Integer i= peopleService.count(wrapper);
+                Integer i = peopleService.count(wrapper);
 
-                map.put("peopleSize",i);
+                map.put("peopleSize", i);
                 list.add(map);
-
             }
             return ResultDTO.ok_data(list);
         }
@@ -130,12 +124,13 @@ public class PeopleController {
     }
 
 
-    @ApiOperation(position = 10, value = "人员列表数量(警务)")
+    @ApiOperation(position = 50, value = "人员列表数量(警务)")
     @PostMapping("/getPeoplesByjwNum")
     public ResultDTO getPeoplesByjwNum(@RequestBody @Valid PeopleDTO.getPeoplePL dto) {
         StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
         JSONObject jsonObject = standardHelper.policeArea(a);
-        a.setArea(dto.getSsjwqdm()); a.setType(dto.getType());
+        a.setArea(dto.getSsjwqdm());
+        a.setType(dto.getType());
         List<Map<String, Object>> list = new ArrayList<>();
         if (jsonObject.getInteger("status") == 200) {
             JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -160,12 +155,13 @@ public class PeopleController {
     }
 
 
-    @ApiOperation(position = 10, value = "人员列表(警务)")
+    @ApiOperation(position = 60, value = "人员列表(警务)")
     @PostMapping("/getPeoplesByjw")
     public ResultDTO getPeoplesByjw(@RequestBody @Valid PeopleDTO.getPeoplePL dto) {
         StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
         JSONObject jsonObject = standardHelper.policeArea(a);
-        a.setArea(dto.getSsjwqdm()); a.setType(dto.getType());
+        a.setArea(dto.getSsjwqdm());
+        a.setType(dto.getType());
         List<Map<String, Object>> list = new ArrayList<>();
         if (jsonObject.getInteger("status") == 200) {
             JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -192,7 +188,6 @@ public class PeopleController {
 
 
 
-
     //@GetMapping("/t")
     @Transactional
     public void a() {
@@ -212,7 +207,7 @@ public class PeopleController {
             String line;
             StringBuilder sb = new StringBuilder();
 
-            while((line= br.readLine())!=null){
+            while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
 

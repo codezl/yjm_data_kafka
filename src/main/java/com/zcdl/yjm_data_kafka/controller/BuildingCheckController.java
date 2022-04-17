@@ -108,8 +108,9 @@ public class BuildingCheckController {
     @ApiOperation(position = 40, value = "40.查询建筑物数量(根据警务区编号)")
     public ResultDTO buildingPoliceList(@RequestBody @Valid BuildingDTO.getBuildingList dto) {
         StandardDTO.areaDto a = new StandardDTO.areaDto();
+        a.setArea(dto.getSsjwqdm());
+        a.setType(dto.getType());
         JSONObject jsonObject = standardHelper.policeArea(a);
-        a.setArea(dto.getSsjwqdm()); a.setType(dto.getType());
         List<Map<String, Object>> list = new ArrayList<>();
         if (jsonObject.getInteger("status") == 200) {
             JSONArray jsonArray = jsonObject.getJSONArray("data");
