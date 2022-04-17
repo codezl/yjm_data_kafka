@@ -11,6 +11,7 @@ import com.zcdl.yjm_data_kafka.mapper.PeopleDao;
 import com.zcdl.yjm_data_kafka.service.IPeopleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -19,7 +20,7 @@ import javax.annotation.Resource;
  * 实有人口-住址信息 服务实现类
  * </p>
  *
- * @author 
+ * @author
  * @since 2022-04-16
  */
 @Service
@@ -39,12 +40,16 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements
         String jzdzSqcjdm = dto.getJzdzSqcjdm();
         String jzdzSsjwqdm = dto.getJzdzSsjwqdm();
         String xm = dto.getXm();
-
-        Page<People> page = this.page(new Page<>(dto.getPageIndex(), dto.getPageSize()), new QueryWrapper<People>()
-                .eq(StrUtil.isNotBlank(jzdzDzbm),"jzdz_dzbm", jzdzDzbm).likeRight(StrUtil.isNotBlank(jzdzSsxqdm),"jzdz_ssxqdm",jzdzSsxqdm)
-                .likeRight(StrUtil.isNotBlank(jzdzSqcjdm),"jzdz_sqcjdm",jzdzSqcjdm.replaceAll("0+$", ""))
-                .likeRight(StrUtil.isNotBlank(jzdzSsjwqdm),"jzdz_ssjwqdm", jzdzSsjwqdm)
-                .like(StrUtil.isNotBlank(xm),"xm",xm).orderByDesc("id"));
+        QueryWrapper wrapper = new QueryWrapper<People>()
+                .eq(StrUtil.isNotBlank(jzdzDzbm), "jzdz_dzbm", jzdzDzbm).likeRight(StrUtil.isNotBlank(jzdzSsxqdm), "jzdz_ssxqdm", jzdzSsxqdm)
+                .like(StrUtil.isNotBlank(xm), "xm", xm);
+        if (!StringUtils.isEmpty(jzdzSqcjdm))
+            if (!StringUtils.isEmpty(jzdzSqcjdm))
+                wrapper.likeRight(!StrUtil.isEmpty(jzdzSsjwqdm), "jzdz_ssjwqdm", jzdzSsjwqdm.replaceAll("0+$", ""));
+        if (!StringUtils.isEmpty(jzdzSqcjdm))
+            wrapper.likeRight(StrUtil.isNotBlank(jzdzSqcjdm), "jzdz_sqcjdm", jzdzSqcjdm);
+        wrapper.orderByDesc("id");
+        Page<People> page = this.page(new Page<>(dto.getPageIndex(), dto.getPageSize()), wrapper);
         return ResultDTO.ok_data(page);
     }
 
@@ -53,9 +58,9 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements
         String jzdzSsxqdm = dto.getJzdzSsxqdm();
         String jzdzSqcjdm = dto.getJzdzSqcjdm();
         String jzdzSsjwqdm = dto.getJzdzSsjwqdm();
-        return ResultDTO.ok_data(new JSONObject().fluentPut("count",this.count(new QueryWrapper<People>()
-                .eq(StrUtil.isNotBlank(jzdzDzbm),"jzdz_dzbm", jzdzDzbm).like(StrUtil.isNotBlank(jzdzSsxqdm),"jzdz_ssxqdm",jzdzSsxqdm)
-                .likeRight(StrUtil.isNotBlank(jzdzSqcjdm),"jzdz_sqcjdm",jzdzSqcjdm)
-                .likeRight(StrUtil.isNotBlank(jzdzSsjwqdm),"jzdz_ssjwqdm", jzdzSsjwqdm))));
+        return ResultDTO.ok_data(new JSONObject().fluentPut("count", this.count(new QueryWrapper<People>()
+                .eq(StrUtil.isNotBlank(jzdzDzbm), "jzdz_dzbm", jzdzDzbm).like(StrUtil.isNotBlank(jzdzSsxqdm), "jzdz_ssxqdm", jzdzSsxqdm)
+                .likeRight(StrUtil.isNotBlank(jzdzSqcjdm), "jzdz_sqcjdm", jzdzSqcjdm)
+                .likeRight(StrUtil.isNotBlank(jzdzSsjwqdm), "jzdz_ssjwqdm", jzdzSsjwqdm))));
     }
 }

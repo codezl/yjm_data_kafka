@@ -65,12 +65,13 @@ public class PeopleController {
     public ResultDTO getPeoples(@RequestBody @Valid PeopleDTO.getPeoples dto) {
         return peopleService.getPeoples(dto);
     }
-//
-//    @ApiOperation(position = 20, value = "人员数量")
-//    @PostMapping("/getPeoplesNum")
-//    public ResultDTO getPeoplesNum(@RequestBody @Valid PeopleDTO.getPeoplesNum dto) {
-//        return peopleService.getPeoplesNum(dto);
-//    }
+
+
+    @ApiOperation(position = 20, value = "人员数量")
+    @PostMapping("/getPeoplesNum")
+    public ResultDTO getPeoplesNum(@RequestBody @Valid PeopleDTO.getPeoplesNum dto) {
+        return peopleService.getPeoplesNum(dto);
+    }
 
 
     @ApiOperation(position = 10, value = "人员注销列表(村居/警务)")
@@ -142,8 +143,9 @@ public class PeopleController {
                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                 for (Object o : jsonArray) {
                     JSONObject json = (JSONObject) JSONObject.toJSON(o);
-                    Map<String, Object> map = CommonUtils.putCJMap(json);
-
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("people_name", json.getString("name"));
+                    map.put("people_rec", json.getString("id"));
                     QueryWrapper wrapper = new QueryWrapper<>()
                             .likeRight(!StringUtils.isEmpty(json.getString("id")), "jzdz_ssjwqdm",
                                     json.getString("id").replaceAll("0+$", ""))
@@ -164,9 +166,9 @@ public class PeopleController {
                 for (Object o : jsonArray) {
                     JSONObject json = (JSONObject) JSONObject.toJSON(o);
                     Map<String, Object> map = new HashMap<>();
-                    map.put("People_name", json.getString("mc"));
-                    map.put("People_rec", json.getString("dm"));
-                    map.put("People_address", json.getString("jwhQc"));
+                    map.put("people_name", json.getString("mc"));
+                    map.put("people_rec", json.getString("dm"));
+                    map.put("people_address", json.getString("jwhQc"));
                     QueryWrapper wrapper = new QueryWrapper<>()
                             .likeRight(!StringUtils.isEmpty(json.getString("dm")), "jzdz_sqcjdm", json.getString("dm"))
                             .like(!StringUtils.isEmpty(dto.getRkbm()), "rkbm", dto.getRkbm());
