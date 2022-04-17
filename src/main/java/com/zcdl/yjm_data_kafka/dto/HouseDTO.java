@@ -37,4 +37,13 @@ public class HouseDTO {
         @ApiModelProperty(value = "所属警务区", example = "123")
         private String jzdzSsjwqdm;
     }
+
+    @Data
+    public static class getHouseCheckFeedbacks extends PageDTO{
+        @ApiModelProperty(value = "核实_房屋地址编码", example = "123")
+        private String hsFwdzbm;
+
+        @ApiModelProperty(value = "核实_所属警务区", example = "123")
+        private String hsSsjwqdm;
+    }
 }

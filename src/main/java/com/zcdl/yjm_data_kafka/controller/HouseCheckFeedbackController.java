@@ -1,9 +1,19 @@
 package com.zcdl.yjm_data_kafka.controller;
 
 
+import com.zcdl.yjm_data_kafka.dto.HouseDTO;
+import com.zcdl.yjm_data_kafka.dto.ResultDTO;
+import com.zcdl.yjm_data_kafka.service.impl.HouseCheckFeedbackServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -14,7 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2022-04-17
  */
 @RestController
-@RequestMapping("/house-check-feedback")
+@RequestMapping("/houseCheckFeedback")
+@Api(tags = "房屋核实反馈信息")
 public class HouseCheckFeedbackController {
+
+    @Resource
+    private HouseCheckFeedbackServiceImpl houseCheckFeedbackService;
+
+    @ApiOperation(value = "查询房屋核实反馈信息")
+    @PostMapping("/getHouseCheckFeedbacks")
+    private ResultDTO getHouseCheckFeedbacks(@RequestBody @Valid HouseDTO.getHouseCheckFeedbacks dto){
+        return houseCheckFeedbackService.getHouseCheckFeedbacks(dto);
+    }
 
 }
