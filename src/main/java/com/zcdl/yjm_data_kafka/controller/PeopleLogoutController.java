@@ -66,4 +66,34 @@ public class PeopleLogoutController {
         }
         return R.failed("查询失败");
     }
+
+    @PostMapping("peopleLogoutsByVillage")
+    @ApiOperation("查询用户迁出记录")
+    public R<Object> peopleLogoutsByVillage(StandardDTO.areaADto areaADto) {
+        JSONObject jsonObject = standardHelper.getType(areaADto);
+        List<PeopleLogoutDTO.PeopleLogoutResDTO> requestParams;
+        if (jsonObject.getInteger("status") == 200) {
+            requestParams = JSONObject.parseArray(jsonObject.toJSONString(), PeopleLogoutDTO.PeopleLogoutResDTO.class);
+            if (requestParams.size() == 0) {
+                return R.ok(requestParams);
+            }
+            PeopleLogoutDTO.PeopleLogoutResDTO dto;
+            for (int i = 0; i < requestParams.size(); i++) {
+//            peopleLogoutDao.selectPage(new Page<>(),new QueryWrapper<PeopleLogout>()
+//                    .eq("jzdz_ssxqdm",requestParams.get(i).getDm())
+//                    .eq("jzdz_dzbm",requestParams.get(i).getDzdm()));
+                QueryWrapper<PeopleLogout> peopleLogoutQueryWrapper = new QueryWrapper<PeopleLogout>()
+                        .eq("jzdz_ssjwqdm", requestParams.get(i).getDm())
+                        .eq("jzdz_dzbm", requestParams.get(i).getSjxzqhDzbm());
+                List<PeopleLogout> peopleLogouts = peopleLogoutDao.selectList(peopleLogoutQueryWrapper);
+                Integer num = peopleLogoutDao.selectCount(peopleLogoutQueryWrapper);
+                dto = requestParams.get(i);
+                dto.setNum(num);
+                dto.setPeopleLogouts(peopleLogouts);
+                requestParams.set(i, dto);
+            }
+            return R.ok(requestParams);
+        }
+        return R.failed("查询失败");
+    }
 }

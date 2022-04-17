@@ -31,7 +31,7 @@ public class PeopleConfirmDTO {
     }
 
     @Data
-    public static class PeopleConfirmResDTO extends PeopleLogoutDTO.commonDto{
+    public static class PeopleConfirmResDTO extends PeopleLogoutDTO.CommonDto{
         private List<PeopleConfirm> peopleConfirms;
     }
 }

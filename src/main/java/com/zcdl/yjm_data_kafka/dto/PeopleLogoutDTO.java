@@ -19,9 +19,9 @@ import java.util.List;
 public class PeopleLogoutDTO {
 
     @Data
-    public static class responseParams {
+    public static class ResponseParams {
         @ApiModelProperty(value = "查询参数列表", example = "123")
-        private List<commonDto> responseParams;
+        private List<CommonDto> responseParams;
     }
 
     /**
@@ -29,7 +29,7 @@ public class PeopleLogoutDTO {
     * @Date: 2022/4/17
     */
     @Data
-    public static class commonDto {
+    public static class CommonDto {
         private String dzdm;
         private String mc;
         private String dm;
@@ -43,11 +43,11 @@ public class PeopleLogoutDTO {
     }
 
     @Data
-    public static class PeopleLogoutResDTO extends commonDto{
+    public static class PeopleLogoutResDTO extends CommonDto{
         private List<PeopleLogout> peopleLogouts;
     }
 
-    public static class commonPageDTO extends StandardDTO.areaDto {
+    public static class CommonPageDTO extends StandardDTO.areaDto {
         private Integer pageSize;
         private Integer pageNum;
     }
