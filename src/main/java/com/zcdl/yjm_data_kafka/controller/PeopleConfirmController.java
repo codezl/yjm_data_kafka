@@ -45,21 +45,21 @@ public class PeopleConfirmController {
     @Autowired
     PeopleConfirmDao peopleConfirmDao;
 
-    @PostMapping("/getPropleConfirms")
-    @ApiOperation(value = "地址确认信息列表")
-    @ApiResponses({
-            @ApiResponse(code = 200,message = "ok")})
-    public ResultDTO getPropleConfirms(@RequestBody @Valid PeopleConfirmDTO.getPropleConfirms dto){
-        return peopleConfirmService.getPropleConfirms(dto);
-    }
-
-    @PostMapping("/getPropleConfirmsNum")
-    @ApiOperation(value = "地址确认信息数量")
-    @ApiResponses({
-            @ApiResponse(code = 200,message = "ok")})
-    public ResultDTO getPropleConfirmsNum(@RequestBody @Valid PeopleConfirmDTO.getPropleConfirmsNum dto){
-        return peopleConfirmService.getPropleConfirmsNum(dto);
-    }
+//    @PostMapping("/getPropleConfirms")
+//    @ApiOperation(value = "地址确认信息列表")
+//    @ApiResponses({
+//            @ApiResponse(code = 200,message = "ok")})
+//    public ResultDTO getPropleConfirms(@RequestBody @Valid PeopleConfirmDTO.getPropleConfirms dto){
+//        return peopleConfirmService.getPropleConfirms(dto);
+//    }
+//
+//    @PostMapping("/getPropleConfirmsNum")
+//    @ApiOperation(value = "地址确认信息数量")
+//    @ApiResponses({
+//            @ApiResponse(code = 200,message = "ok")})
+//    public ResultDTO getPropleConfirmsNum(@RequestBody @Valid PeopleConfirmDTO.getPropleConfirmsNum dto){
+//        return peopleConfirmService.getPropleConfirmsNum(dto);
+//    }
 
     @PostMapping("peopleConfirmList")
     @ApiOperation("用户登记记录，警务区查询")

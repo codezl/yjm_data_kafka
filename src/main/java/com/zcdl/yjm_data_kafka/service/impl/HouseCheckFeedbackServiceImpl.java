@@ -33,15 +33,4 @@ public class HouseCheckFeedbackServiceImpl extends ServiceImpl<HouseCheckFeedbac
         this.houseCheckFeedbackDao.insert(houseCheckFeedback);
     }
 
-    public ResultDTO getHouseCheckFeedbacks(HouseDTO.getHouseCheckFeedbacks dto) {
-        String hsFwdzbm = dto.getHsFwdzbm();
-        String hsSsjwqdm = dto.getHsSsjwqdm();
-
-        Page<HouseCheckFeedback> page = this.page(new Page<>(dto.getPageIndex(), dto.getPageSize()),
-                new QueryWrapper<HouseCheckFeedback>()
-                .like(StrUtil.isNotBlank(hsFwdzbm), "hs_fwdzbm", hsFwdzbm)
-                 .like(StrUtil.isNotBlank(hsSsjwqdm), "hs_ssjwqdm", hsSsjwqdm));
-
-        return ResultDTO.ok_data(page);
-    }
 }

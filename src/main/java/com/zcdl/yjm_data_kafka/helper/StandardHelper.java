@@ -22,7 +22,8 @@ public class StandardHelper {
      * @return
      */
     public JSONObject policeArea(StandardDTO.areaDto dto) {
-        JSONObject jsonObjec = httpHelper.postM(Url + "/collect/policeArea", "json", dto.toString());
+        JSONObject json= (JSONObject) JSONObject.toJSON(dto);
+        JSONObject jsonObjec = httpHelper.postM(Url + "collect/policeArea", "json", json.toString());
         return jsonObjec;
     }
 
@@ -33,7 +34,8 @@ public class StandardHelper {
      * @return
      */
     public JSONObject getType(StandardDTO.areaADto dto) {
-        JSONObject jsonObjec = httpHelper.postM(Url + "/policeStandard/getType", "json", dto.toString());
+        JSONObject json= (JSONObject) JSONObject.toJSON(dto);
+        JSONObject jsonObjec = httpHelper.postM(Url + "policeStandard/getType", "json", json.toString());
         return jsonObjec;
     }
 

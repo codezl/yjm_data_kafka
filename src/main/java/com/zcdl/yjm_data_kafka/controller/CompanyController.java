@@ -31,16 +31,17 @@ public class CompanyController {
     @Resource
     private CompanyServiceImpl companyService;
 
-    @ApiOperation(position = 10, value = "单位列表")
-    @PostMapping("/getCompanys")
-    public ResultDTO getCompanys(@RequestBody @Valid CompanyDTO.getCompanys dto){
-        return companyService.getCompanys(dto);
-    }
 
-    @ApiOperation(position = 10, value = "单位数量")
-    @PostMapping("/getCompanysNum")
-    public ResultDTO getCompanysNum(@RequestBody @Valid CompanyDTO.getCompanysNum dto){
-        return companyService.getCompanysNum(dto);
-    }
+//    @ApiOperation(position = 10, value = "单位列表")
+//    @PostMapping("/getCompanys")
+//    public ResultDTO getCompanys(@RequestBody @Valid CompanyDTO.getCompanys dto){
+//        return companyService.getCompanys(dto);
+//    }
+//
+//    @ApiOperation(position = 10, value = "单位数量")
+//    @PostMapping("/getCompanysNum")
+//    public ResultDTO getCompanysNum(@RequestBody @Valid CompanyDTO.getCompanysNum dto){
+//        return companyService.getCompanysNum(dto);
+//    }
 
 }
