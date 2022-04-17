@@ -13,10 +13,10 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class PageDTO {
-    @ApiModelProperty(notes = "页数",required = true)
+//    @ApiModelProperty(notes = "页数",required = true)
     @NotNull(message = "请上传页数")
     Integer pageSize;
-    @ApiModelProperty(notes = "页码",required = true)
+//    @ApiModelProperty(notes = "页码",required = true)
     @NotNull(message = "请上传页码")
     Integer pageIndex;
 }

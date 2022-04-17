@@ -2,6 +2,7 @@ package com.zcdl.yjm_data_kafka.config;
 
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import io.swagger.annotations.Api;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -16,37 +17,30 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * Created by Administrator on 2018/12/5.
  * Use to
  */
-@Configuration
 @EnableSwagger2
 @EnableSwaggerBootstrapUI
+@Configuration
+//@ConditionalOnProperty(name = "swagger.enable", havingValue = "true")
 public class SwaggerConfig {
-    //是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置
-//    @Value("${swagger.enabled}")
-//    Boolean swaggerEnabled;
 
     @Bean
-    public Docket Api() {
+    public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 .paths(PathSelectors.any())
-                .build()
-//                .pathMapping("/school")
-                .apiInfo(apiInfo())
-                .enable(true);
+                .build();
     }
-
-
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("swagger2")
-                .contact("xiaoying")
-                .description("</br>" +
-                        "one" +
-                        "</br>"
-                )
-                .version("0.1.1")
+                .title("数据接口文档")
+                .description("数据接口文档")
+                .termsOfServiceUrl("http://www.wqewt.com:2443")
+                .version("1.0")
                 .build();
     }
+
 }
+

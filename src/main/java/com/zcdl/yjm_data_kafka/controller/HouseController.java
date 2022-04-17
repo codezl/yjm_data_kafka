@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/house")
-@Api(tags = "10.房屋管理", position = 10)
+@Api(tags = "20.房屋管理", position = 20)
 public class HouseController {
 
     @Resource
@@ -33,7 +33,7 @@ public class HouseController {
         return houseService.getHouses(dto);
     }
 
-    @ApiOperation(position = 10, value = "单位数量")
+    @ApiOperation(position = 20, value = "单位数量")
     @PostMapping("/getHousesNum")
     public ResultDTO getPeoplesNum(HouseDTO.getHousesNum dto) {
         return houseService.getHousesNum(dto);

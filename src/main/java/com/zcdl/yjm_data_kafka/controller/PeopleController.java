@@ -30,7 +30,7 @@ import java.io.*;
  */
 @RestController
 @RequestMapping("/people")
-@Api(tags = "10.人员管理", position = 10)
+@Api(tags = "60.人员管理", position = 60)
 public class PeopleController {
 
     @Resource
