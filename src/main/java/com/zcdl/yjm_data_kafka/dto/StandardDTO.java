@@ -20,4 +20,17 @@ public class StandardDTO {
         @ApiModelProperty(notes = "编号")
         String ncommittee;
     }
+
+    @Data
+    public static class areaADto {
+        @ApiModelProperty(notes = "类型 1 区 2 街道 镇，3 村4 村小组", example = "2", required = true)
+        @NotNull(message = "请上传类型")
+        Integer type;
+        @ApiModelProperty(notes = "类型名称")
+        String name;
+        @ApiModelProperty(notes = "编号名称")
+        String area;
+        @ApiModelProperty(notes = "编号")
+        String ncommittee;
+    }
 }

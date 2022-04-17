@@ -32,7 +32,7 @@ public class StandardHelper {
      * @param dto
      * @return
      */
-    public JSONObject getType(StandardDTO.areaDto dto) {
+    public JSONObject getType(StandardDTO.areaADto dto) {
         JSONObject jsonObjec = httpHelper.postM(Url + "/policeStandard/getType", "json", dto.toString());
         return jsonObjec;
     }
