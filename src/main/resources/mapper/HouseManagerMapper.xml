@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zcdl.yjm_data_kafka.mapper.HouseManagerDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zcdl.yjm_data_kafka.model.HouseManager">
+        <id column="id" property="id" />
+        <result column="gxrxxbm" property="gxrxxbm" />
+        <result column="dzbm" property="dzbm" />
+        <result column="dzmc" property="dzmc" />
+        <result column="nbglmc" property="nbglmc" />
+        <result column="dzyslxdm" property="dzyslxdm" />
+        <result column="gxrlbdm" property="gxrlbdm" />
+        <result column="gxr_rygxdm" property="gxrRygxdm" />
+        <result column="gxr_xm" property="gxrXm" />
+        <result column="gxr_wwx" property="gxrWwx" />
+        <result column="gxr_wwm" property="gxrWwm" />
+        <result column="gxr_gjhdqdm" property="gxrGjhdqdm" />
+        <result column="gxr_cyzjdm" property="gxrCyzjdm" />
+        <result column="gxr_dwbm" property="gxrDwbm" />
+        <result column="gxr_dwjyxxbm" property="gxrDwjyxxbm" />
+        <result column="gxr_zjhm" property="gxrZjhm" />
+        <result column="gxr_lxdh" property="gxrLxdh" />
+        <result column="glsflxdm" property="glsflxdm" />
+        <result column="ldzpdbs" property="ldzpdbs" />
+        <result column="djdw_dm" property="djdwDm" />
+        <result column="djdw_mc" property="djdwMc" />
+        <result column="djr_xm" property="djrXm" />
+        <result column="djr_zjhm" property="djrZjhm" />
+        <result column="djr_sflbdm" property="djrSflbdm" />
+        <result column="djsj" property="djsj" />
+        <result column="rksj" property="rksj" />
+        <result column="rkgxsj" property="rkgxsj" />
+        <result column="tbgxsj" property="tbgxsj" />
+        <result column="sjcsdwdm" property="sjcsdwdm" />
+        <result column="sjcsdwmc" property="sjcsdwmc" />
+        <result column="sjlydm" property="sjlydm" />
+    </resultMap>
+
+</mapper>
