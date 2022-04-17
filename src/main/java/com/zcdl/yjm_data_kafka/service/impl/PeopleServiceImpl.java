@@ -6,6 +6,8 @@ import com.zcdl.yjm_data_kafka.service.IPeopleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * <p>
  * 实有人口-住址信息 服务实现类
@@ -17,4 +19,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements IPeopleService {
 
+    @Resource
+    private PeopleDao peopleDao;
+
+    @Override
+    public void add(People people) {
+        this.peopleDao.insert(people);
+    }
 }

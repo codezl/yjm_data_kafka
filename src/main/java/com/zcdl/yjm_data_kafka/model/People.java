@@ -343,4 +343,5 @@ public class People implements Serializable {
 
     private String zxlbdm;
 
+    private Integer start;
 }

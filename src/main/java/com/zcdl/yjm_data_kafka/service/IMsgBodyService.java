@@ -13,4 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMsgBodyService extends IService<MsgBody> {
 
+    void handleMsg(String msg);
+
+    void handleMsgAndForward(String msg);
 }

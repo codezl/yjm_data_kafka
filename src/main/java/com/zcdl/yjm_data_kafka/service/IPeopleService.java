@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IPeopleService extends IService<People> {
 
+    void add(People people);
 }

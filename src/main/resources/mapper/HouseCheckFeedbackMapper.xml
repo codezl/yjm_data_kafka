@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zcdl.yjm_data_kafka.mapper.HouseCheckFeedbackDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zcdl.yjm_data_kafka.model.HouseCheckFeedback">
+        <id column="id" property="id" />
+        <result column="ywlsh" property="ywlsh" />
+        <result column="fwxxbm" property="fwxxbm" />
+        <result column="shjgdm" property="shjgdm" />
+        <result column="hsdjywlsh" property="hsdjywlsh" />
+        <result column="hs_fwdzbm" property="hsFwdzbm" />
+        <result column="hs_fwdzmc" property="hsFwdzmc" />
+        <result column="hs_ssjwqdm" property="hsSsjwqdm" />
+        <result column="hs_bz" property="hsBz" />
+        <result column="ywhj" property="ywhj" />
+        <result column="ywclztbs" property="ywclztbs" />
+        <result column="ywcxlb" property="ywcxlb" />
+        <result column="djdw_dm" property="djdwDm" />
+        <result column="djdw_mc" property="djdwMc" />
+        <result column="djr_xm" property="djrXm" />
+        <result column="djr_zjhm" property="djrZjhm" />
+        <result column="djsj" property="djsj" />
+        <result column="gxsj" property="gxsj" />
+        <result column="rksj" property="rksj" />
+        <result column="rkgxsj" property="rkgxsj" />
+        <result column="tbgxsj" property="tbgxsj" />
+        <result column="sjlydm" property="sjlydm" />
+        <result column="sjgsdwmc" property="sjgsdwmc" />
+        <result column="sjgsdwdm" property="sjgsdwdm" />
+    </resultMap>
+
+</mapper>
