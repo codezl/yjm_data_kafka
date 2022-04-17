@@ -12,7 +12,7 @@ spring:
     content-type: text/html
     suffix: .html
   datasource:
-    url: jdbc:postgresql://192.168.4.18:25432/safety_inspection?stringtype=unspecified  #正式
+    url: jdbc:postgresql://192.168.4.18:25432/deng_yjm?stringtype=unspecified  #正式
     username: postgres
     password: Deng-2511582
     type: com.alibaba.druid.pool.DruidDataSource
