@@ -54,6 +54,9 @@ public class MsgBodyServiceImpl extends ServiceImpl<MsgBodyDao, MsgBody> impleme
     @Value("${forwardUrl:null}")
     private String forwardUrl;
 
+    /**
+     * 处理、消费消息
+     */
     @Override
     @Transactional
     public String handleMsg(String msg, String uuid){
