@@ -19,4 +19,9 @@ public class HouseManagerSearchDTO extends PageDTO{
     public static class HouseManagerResDTO extends CommonResDTO.PoliceCommonDto {
         private List<HouseManager> houseManagers;
     }
+
+    @Data
+    public static class VHouseManagerResDTO extends CommonResDTO.VillageCommonDto {
+        private List<HouseManager> houseManagers;
+    }
 }
