@@ -1,5 +1,6 @@
 package com.zcdl.yjm_data_kafka.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -12,33 +13,26 @@ import lombok.Data;
 public class PeopleDTO {
 
     @Data
-    public static class getPeoples extends PageDTO{
-
-        // 户籍地址_地址编码
+    public static class getPeoples extends PageDTO {
+        @ApiModelProperty(value = "户籍地址_地址编码", example = "123")
         private String jzdzDzbm;
-
-        // 居住地址_省市县(区)
+        @ApiModelProperty(value = "居住地址_省市县", example = "123")
         private String jzdzSsxqdm;
-
-        // 居住地址_社区(村居)
+        @ApiModelProperty(value = "居住地址_社区", example = "123")
         private String jzdzSqcjdm;
-
-        // 居住地址_所属警务区
+        @ApiModelProperty(value = "居住地址_所属警务区", example = "123")
         private String jzdzSsjwqdm;
     }
 
     @Data
     public static class getPeoplesNum {
-        // 户籍地址_地址编码
+        @ApiModelProperty(value = "户籍地址_地址编码", example = "123")
         private String jzdzDzbm;
-
-        // 居住地址_省市县(区)
+        @ApiModelProperty(value = "居住地址_省市县", example = "123")
         private String jzdzSsxqdm;
-
-        // 居住地址_社区(村居)
+        @ApiModelProperty(value = "居住地址_社区", example = "123")
         private String jzdzSqcjdm;
-
-        // 居住地址_所属警务区
+        @ApiModelProperty(value = "居住地址_所属警务区", example = "123")
         private String jzdzSsjwqdm;
     }
 }
