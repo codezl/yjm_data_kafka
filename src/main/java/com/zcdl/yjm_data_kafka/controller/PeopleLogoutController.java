@@ -26,7 +26,7 @@ import java.util.List;
  * 实有人口-住址信息 前端控制器
  * </p>
  *
- * @author 
+ * @author
  * @since 2022-04-17
  */
 @RestController
@@ -49,9 +49,6 @@ public class PeopleLogoutController {
             }
             PeopleLogoutDTO.PeopleLogoutResDTO dto;
             for (int i = 0; i < requestParams.size(); i++) {
-//            peopleLogoutDao.selectPage(new Page<>(),new QueryWrapper<PeopleLogout>()
-//                    .eq("jzdz_ssxqdm",requestParams.get(i).getDm())
-//                    .eq("jzdz_dzbm",requestParams.get(i).getDzdm()));
                 QueryWrapper<PeopleLogout> peopleLogoutQueryWrapper = new QueryWrapper<PeopleLogout>()
                         .eq("jzdz_ssjwqdm", requestParams.get(i).getDm())
                         .eq("jzdz_dzbm", requestParams.get(i).getSjxzqhDzbm());

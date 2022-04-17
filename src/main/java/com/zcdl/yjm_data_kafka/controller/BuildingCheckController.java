@@ -52,8 +52,11 @@ public class BuildingCheckController {
     @PostMapping("/selBuildingCheck")
     @ApiOperation(position = 10, value = "10.查询建筑物列表")
     public ResultDTO selBuildingCheck(@RequestBody @Valid BuildingDTO.getBuilding dto) {
-        QueryWrapper wrapper = new QueryWrapper<>().like("sssqcjdm", dto.getSqcjdm())
-                .like("dzbm", dto.getDzbm()).eq("ssjwqdm", dto.getSsjwqdm()).like("jzwxxbm", dto.getJzwxxbm());
+        QueryWrapper wrapper = new QueryWrapper<>().likeRight(!StringUtils.isEmpty(dto.getSqcjdm()),
+                "sssqcjdm", dto.getSqcjdm())
+                .eq(!StringUtils.isEmpty(dto.getDzbm()), "dzbm", dto.getDzbm())
+                .likeRight(!StringUtils.isEmpty(dto.getSsjwqdm()), "ssjwqdm", dto.getSsjwqdm())
+                .likeRight(!StringUtils.isEmpty(dto.getJzwxxbm()), "jzwxxbm", dto.getJzwxxbm());
         Page<BuildingCheck> buildingCheckPage = buildingCheckDao.selectPage(new Page<>(dto.getPageIndex(), dto.getPageSize()), wrapper);
         return ResultDTO.ok_data(buildingCheckPage);
     }
@@ -62,8 +65,10 @@ public class BuildingCheckController {
     @PostMapping("/buildingCheckCount")
     @ApiOperation(position = 20, value = "20.查询建筑物数量")
     public ResultDTO buildingCheckCount(@RequestBody @Valid BuildingDTO.getBuilding dto) {
-        QueryWrapper wrapper = new QueryWrapper<>().like("sssqcjdm", dto.getSqcjdm())
-                .like("dzbm", dto.getDzbm()).like("ssjwqdm", dto.getSsjwqdm()).eq("jzwxxbm", dto.getJzwxxbm());
+        QueryWrapper wrapper = new QueryWrapper<>().likeRight(!StringUtils.isEmpty(dto.getSqcjdm()), "sssqcjdm", dto.getSqcjdm())
+                .eq(!StringUtils.isEmpty(dto.getDzbm()), "dzbm", dto.getDzbm())
+                .likeRight(!StringUtils.isEmpty(dto.getSsjwqdm()), "ssjwqdm", dto.getSsjwqdm())
+                .likeRight(!StringUtils.isEmpty(dto.getJzwxxbm()), "jzwxxbm", dto.getJzwxxbm());
         Integer buildingSize = buildingCheckDao.selectCount(wrapper);
         return ResultDTO.ok_data(buildingSize);
     }
@@ -71,7 +76,10 @@ public class BuildingCheckController {
     @PostMapping("/buildingList")
     @ApiOperation(position = 30, value = "30.查询建筑物数量(根据村居编号)")
     public ResultDTO buildingList(@RequestBody @Valid BuildingDTO.getBuildingList dto) {
-        StandardDTO.areaADto a = new StandardDTO.areaADto().setArea(dto.getSsjwqdm()).setType(dto.getType());
+        System.out.println(dto);
+        StandardDTO.areaADto a = new StandardDTO.areaADto();
+        a.setType(dto.getType());
+        a.setAreaDm(dto.getSqcjdm());
         JSONObject jsonObject = standardHelper.getType(a);
         List<Map<String, Object>> list = new ArrayList<>();
         if (jsonObject.getInteger("status") == 200) {
@@ -97,10 +105,11 @@ public class BuildingCheckController {
 
 
     @PostMapping("/buildingPoliceList")
-    @ApiOperation(position = 40, value = "40.查询建筑物数量(根据村居编号)")
+    @ApiOperation(position = 40, value = "40.查询建筑物数量(根据警务区编号)")
     public ResultDTO buildingPoliceList(@RequestBody @Valid BuildingDTO.getBuildingList dto) {
-        StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
+        StandardDTO.areaDto a = new StandardDTO.areaDto();
         JSONObject jsonObject = standardHelper.policeArea(a);
+        a.setArea(dto.getSsjwqdm()); a.setType(dto.getType());
         List<Map<String, Object>> list = new ArrayList<>();
         if (jsonObject.getInteger("status") == 200) {
             JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -111,7 +120,8 @@ public class BuildingCheckController {
                 map.put("police_rec", json.getString("id"));
                 QueryWrapper wrapper = new QueryWrapper<>().likeRight(!StringUtils.isEmpty(dto.getSqcjdm()), "sssqcjdm", dto.getSqcjdm())
                         .like(!StringUtils.isEmpty(dto.getDzbm()), "dzbm", dto.getDzbm())
-                        .likeRight(!StringUtils.isEmpty(json.getString("id")), "ssjwqdm", json.getString("id"))
+                        .likeRight(!StringUtils.isEmpty(json.getString("id")), "ssjwqdm",
+                                json.getString("id").replaceAll("0+$", ""))
                         .likeRight(!StringUtils.isEmpty(dto.getJzwxxbm()), "jzwxxbm", dto.getJzwxxbm());
                 Integer buildingSize = buildingCheckDao.selectCount(wrapper);
                 map.put("buildingSize", buildingSize);
