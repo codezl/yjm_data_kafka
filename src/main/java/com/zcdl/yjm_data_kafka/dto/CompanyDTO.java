@@ -24,10 +24,16 @@ public class CompanyDTO {
 
     @Data
     public static class getCompanysNum {
+        // 登记单位_代码
+        @ApiModelProperty(notes = "登记单位_代码")
         private String djdwDm;
 
+        // 登记单位_公安机关机构代码
+        @ApiModelProperty(notes = "登记单位_公安机关机构代码")
         private String djdwGajgjgdm;
 
+        // 登记单位_名称
+        @ApiModelProperty(notes = "登记单位_名称")
         private String djdwMc;
     }
 }

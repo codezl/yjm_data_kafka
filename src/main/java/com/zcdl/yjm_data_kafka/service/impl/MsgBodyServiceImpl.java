@@ -2,7 +2,6 @@ package com.zcdl.yjm_data_kafka.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zcdl.yjm_data_kafka.dto.MsgBodyAddDTO;
-import com.zcdl.yjm_data_kafka.dto.MsgDTO;
 import com.zcdl.yjm_data_kafka.exception.MyException;
 import com.zcdl.yjm_data_kafka.model.*;
 import com.zcdl.yjm_data_kafka.mapper.MsgBodyDao;

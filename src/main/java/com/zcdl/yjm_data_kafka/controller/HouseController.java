@@ -4,6 +4,8 @@ import com.zcdl.yjm_data_kafka.dto.HouseDTO;
 import com.zcdl.yjm_data_kafka.dto.PeopleDTO;
 import com.zcdl.yjm_data_kafka.dto.ResultDTO;
 import com.zcdl.yjm_data_kafka.service.impl.HouseServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,18 +20,20 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/house")
+@Api(tags = "10.房屋管理", position = 10)
 public class HouseController {
 
     @Resource
     private HouseServiceImpl houseService;
 
 
-
+    @ApiOperation(position = 10, value = "房屋列表")
     @PostMapping("/getHouses")
     public ResultDTO getPeoples(HouseDTO.getHouses dto) {
         return houseService.getHouses(dto);
     }
 
+    @ApiOperation(position = 10, value = "单位数量")
     @PostMapping("/getHousesNum")
     public ResultDTO getPeoplesNum(HouseDTO.getHousesNum dto) {
         return houseService.getHousesNum(dto);

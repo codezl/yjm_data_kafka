@@ -7,6 +7,8 @@ import com.zcdl.yjm_data_kafka.dto.ResultDTO;
 import com.zcdl.yjm_data_kafka.service.impl.MsgBodyServiceImpl;
 import com.zcdl.yjm_data_kafka.service.impl.PeopleServiceImpl;
 import com.zcdl.yjm_data_kafka.utils.SaveMsgUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.xml.transform.Result;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * <p>
@@ -31,6 +30,7 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/people")
+@Api(tags = "10.人员管理", position = 10)
 public class PeopleController {
 
     @Resource
@@ -48,27 +48,39 @@ public class PeopleController {
         return "okok";
     }
 
+    @ApiOperation(position = 10, value = "人员列表")
     @PostMapping("/getPeoples")
     public ResultDTO getPeoples(PeopleDTO.getPeoples dto) {
         return peopleService.getPeoples(dto);
     }
 
+    @ApiOperation(position = 10, value = "人员数量")
     @PostMapping("/getPeoplesNum")
     public ResultDTO getPeoplesNum(PeopleDTO.getPeoplesNum dto) {
         return peopleService.getPeoplesNum(dto);
     }
 
-   // @GetMapping("/t")
+    @GetMapping("/t")
     @Transactional
     public void a() {
         try (FileInputStream file = new FileInputStream(new File("C:\\Users\\mata\\Desktop\\yjm.log"))) {
-            int read = 0;
-            byte[] b = new byte[1024];
 
+            InputStreamReader reader = new InputStreamReader(file, "UTF-8");
+
+            BufferedReader br = new BufferedReader(reader);
+
+//            int read = 0;
+//            byte[] b = new byte[1024];
+//
+//            while ((read = file.read(b)) != -1) {
+//                sb.append(new String(b, 0, read));
+//            }
+
+            String line;
             StringBuilder sb = new StringBuilder();
 
-            while ((read = file.read(b)) != -1) {
-                sb.append(new String(b, 0, read));
+            while((line= br.readLine())!=null){
+                sb.append(line);
             }
 
             JSONArray array = JSONArray.parseArray(sb.toString());

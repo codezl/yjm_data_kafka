@@ -14,10 +14,16 @@ public class HouseDTO {
 
     @Data
     public static class getHouses extends PageDTO{
-        @ApiModelProperty(value = "户籍地址_地址编码", example = "123")
+
+        // 户籍地址_地址编码
+        @ApiModelProperty(notes = "户籍地址_地址编码")
         private String jzdzDzbm;
+
+        // 社区(村居)
         @ApiModelProperty(value = "社区(村居)", example = "123")
         private String jzdzSqcjdm;
+
+        // 所属警务区
         @ApiModelProperty(value = "所属警务区", example = "123")
         private String jzdzSsjwqdm;
     }

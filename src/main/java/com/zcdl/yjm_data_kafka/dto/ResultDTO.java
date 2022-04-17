@@ -1,6 +1,6 @@
 package com.zcdl.yjm_data_kafka.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+//import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * Created by Mata on 2019/9/2.
@@ -38,7 +38,7 @@ public class ResultDTO<T> {
         return data;
     }
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+  //  @JsonInclude(JsonInclude.Include.NON_NULL)
     public void setData(T data) {
         this.data = data;
     }

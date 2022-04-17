@@ -3,8 +3,6 @@ package com.zcdl.yjm_data_kafka.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-
 public class BuildingDTO {
 
     @Data
