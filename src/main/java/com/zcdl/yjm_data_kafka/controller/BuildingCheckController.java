@@ -42,8 +42,8 @@ public class BuildingCheckController {
     @PostMapping("/selBuildingCheck")
     @ApiOperation(position = 10, value = "10.建筑物列表")
     public ResultDTO selBuildingCheck(@RequestBody @Valid BuildingDTO.getBuilding dto) {
-        QueryWrapper wrapper = new QueryWrapper<>().eq("sssqcjdm", dto.getSqcjdm())
-                .eq("dzbm", dto.getDzbm()).eq("ssjwqdm", dto.getSsjwqdm()).eq("jzwxxbm", dto.getJzwxxbm());
+        QueryWrapper wrapper = new QueryWrapper<>().like("sssqcjdm", dto.getSqcjdm())
+                .like("dzbm", dto.getDzbm()).eq("ssjwqdm", dto.getSsjwqdm()).like("jzwxxbm", dto.getJzwxxbm());
         Page<BuildingCheck> buildingCheckPage = buildingCheckDao.selectPage(new Page<>(dto.getPageIndex(), dto.getPageSize()), wrapper);
         return ResultDTO.ok_data(buildingCheckPage);
     }
@@ -52,8 +52,8 @@ public class BuildingCheckController {
     @PostMapping("/buildingCheckCount")
     @ApiOperation(position = 20, value = "20.建筑物数量")
     public ResultDTO buildingCheckCount(@RequestBody @Valid BuildingDTO.getBuilding dto) {
-        QueryWrapper wrapper = new QueryWrapper<>().eq("sssqcjdm", dto.getSqcjdm())
-                .eq("dzbm", dto.getDzbm()).eq("ssjwqdm", dto.getSsjwqdm()).eq("jzwxxbm", dto.getJzwxxbm());
+        QueryWrapper wrapper = new QueryWrapper<>().like("sssqcjdm", dto.getSqcjdm())
+                .like("dzbm", dto.getDzbm()).like("ssjwqdm", dto.getSsjwqdm()).eq("jzwxxbm", dto.getJzwxxbm());
         Integer buildingSize = buildingCheckDao.selectCount(wrapper);
         return ResultDTO.ok_data(buildingSize);
     }
