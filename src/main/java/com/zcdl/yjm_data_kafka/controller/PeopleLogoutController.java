@@ -38,9 +38,9 @@ public class PeopleLogoutController {
 
     @PostMapping("peopleLogoutsByPolice")
     @ApiOperation("警务区查询用户迁出记录")
-    public R<Object> peopleLogoutList(@RequestBody PeopleLogoutDTO.PRequestParams params) {
+    public R<Object> peopleLogoutList(@RequestBody CommonResDTO.ComonRequestParams params) {
         StandardDTO.areaDto areaDto = new StandardDTO.areaDto();
-        areaDto.setNcommittee(params.getJzdzSsjwqdm());
+        areaDto.setNcommittee(params.getJwbm());
         areaDto.setType(3);
         JSONObject jsonObject = standardHelper.policeArea(areaDto);
         List<PeopleLogoutDTO.PeopleLogoutPoliceResDTO> responseParams;
@@ -67,7 +67,9 @@ public class PeopleLogoutController {
 
     @PostMapping("peopleLogoutsByVillage")
     @ApiOperation("村居查询用户迁出记录")
-    public R<Object> peopleLogoutsByVillage(@RequestBody StandardDTO.areaADto areaADto) {
+    public R<Object> peopleLogoutsByVillage(@RequestBody CommonResDTO.ComonRequestParams params) {
+        StandardDTO.areaADto areaADto = new StandardDTO.areaADto();
+        areaADto.setAreaDm(params.getCjbm());
         areaADto.setType(1);
         JSONObject jsonObject = standardHelper.getType(areaADto);
         List<PeopleLogoutDTO.PeopleLogoutResDTO> responseParams;

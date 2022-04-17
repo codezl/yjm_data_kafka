@@ -2,6 +2,8 @@ package com.zcdl.yjm_data_kafka.dto;
 
 import lombok.Data;
 
+import javax.annotation.sql.DataSourceDefinition;
+
 /**
  * Created with IntelliJ IDEA.
  * @Date: 2022/04/18/0:49
@@ -29,6 +31,7 @@ public class CommonResDTO {
     }
 
     /**
+     * class common
      * @Description: 查询警务区返回列表中实体
      * @Date: 2022/4/17
      */
@@ -38,5 +41,12 @@ public class CommonResDTO {
         private String name;
 
         private Integer num;
+    }
+
+    @Data
+    public static class ComonRequestParams {
+        private Integer type;
+        private String jwbm;
+        private String cjbm;
     }
 }
