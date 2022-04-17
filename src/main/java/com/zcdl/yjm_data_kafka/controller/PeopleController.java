@@ -86,6 +86,7 @@ public class PeopleController {
                 List l = peopleService.list(wrapper);
 
                 map.put("peopleList", l);
+                map.put("count",l.size());
                 list.add(map);
 
             }
@@ -94,74 +95,15 @@ public class PeopleController {
 
         return ResultDTO.error_msg(50241, "查询失败");
     }
-
-    @ApiOperation(position = 40, value = "人员列表数量(村居)")
-    @PostMapping("/getPeoplesBycjNum")
-    public ResultDTO getPeoplesNum(@RequestBody @Valid PeopleDTO.getPeople dto) {
-        StandardDTO.areaADto a = new StandardDTO.areaADto().setAreaDm(dto.getSqcjdm()).setType(dto.getType());
-        JSONObject jsonObject = standardHelper.getType(a);
-        List<Map<String, Object>> list = new ArrayList<>();
-        if (jsonObject.getInteger("status") == 200) {
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (Object o : jsonArray) {
-                JSONObject json = (JSONObject) JSONObject.toJSON(o);
-                Map<String, Object> map = new HashMap<>();
-                map.put("building_name", json.getString("mc"));
-                map.put("building_rec", json.getString("dm"));
-                map.put("building_address", json.getString("jwhQc"));
-                QueryWrapper wrapper = new QueryWrapper<>()
-                        .likeRight(!StringUtils.isEmpty(json.getString("dm")), "jzdz_sqcjdm", json.getString("dm"))
-                        .like(!StringUtils.isEmpty(dto.getRkbm()), "rkbm", dto.getRkbm());
-                Integer i = peopleService.count(wrapper);
-
-                map.put("peopleSize", i);
-                list.add(map);
-            }
-            return ResultDTO.ok_data(list);
-        }
-
-        return ResultDTO.error_msg(50241, "查询失败");
-    }
-
-
-    @ApiOperation(position = 50, value = "人员列表数量(警务)")
-    @PostMapping("/getPeoplesByjwNum")
-    public ResultDTO getPeoplesByjwNum(@RequestBody @Valid PeopleDTO.getPeoplePL dto) {
-        StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
-        JSONObject jsonObject = standardHelper.policeArea(a);
-        a.setArea(dto.getSsjwqdm());
-        a.setType(dto.getType());
-        List<Map<String, Object>> list = new ArrayList<>();
-        if (jsonObject.getInteger("status") == 200) {
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (Object o : jsonArray) {
-                JSONObject json = (JSONObject) JSONObject.toJSON(o);
-                Map<String, Object> map = new HashMap<>();
-                map.put("police_name", json.getString("name"));
-                map.put("police_rec", json.getString("id"));
-                QueryWrapper wrapper = new QueryWrapper<>()
-                        .likeRight(!StringUtils.isEmpty(json.getString("id")), "jzdz_ssjwqdm",
-                                json.getString("id").replaceAll("0+$", ""))
-                        .like(!StringUtils.isEmpty(dto.getRkbm()), "rkbm", dto.getRkbm());
-
-                map.put("peopleSize", peopleService.count(wrapper));
-                list.add(map);
-
-            }
-            return ResultDTO.ok_data(list);
-        }
-
-        return ResultDTO.error_msg(50241, "查询失败");
-    }
-
 
     @ApiOperation(position = 60, value = "人员列表(警务)")
     @PostMapping("/getPeoplesByjw")
     public ResultDTO getPeoplesByjw(@RequestBody @Valid PeopleDTO.getPeoplePL dto) {
-        StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
-        JSONObject jsonObject = standardHelper.policeArea(a);
+        StandardDTO.areaDto a = new StandardDTO.areaDto();
         a.setArea(dto.getSsjwqdm());
         a.setType(dto.getType());
+        JSONObject jsonObject = standardHelper.policeArea(a);
+
         List<Map<String, Object>> list = new ArrayList<>();
         if (jsonObject.getInteger("status") == 200) {
             JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -175,7 +117,9 @@ public class PeopleController {
                                 json.getString("id").replaceAll("0+$", ""))
                         .like(!StringUtils.isEmpty(dto.getRkbm()), "rkbm", dto.getRkbm());
 
-                map.put("peopleList", peopleService.list(wrapper));
+                List l = peopleService.list(wrapper);
+                map.put("peopleList", l);
+                map.put("count",l.size());
                 list.add(map);
 
             }

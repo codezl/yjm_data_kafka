@@ -60,6 +60,7 @@ public class HouseController {
         StandardDTO.areaADto a = new StandardDTO.areaADto().setAreaDm(dto.getJzdzSqcjdm()).setType(dto.getType());
         JSONObject jsonObject = standardHelper.getType(a);
         List<Map<String, Object>> list = new ArrayList<>();
+        System.out.println(jsonObject.getInteger("status"));
         if (jsonObject.getInteger("status") == 200) {
             JSONArray jsonArray = jsonObject.getJSONArray("data");
             for (Object o : jsonArray) {
@@ -75,36 +76,7 @@ public class HouseController {
                 List l = houseService.list(wrapper);
 
                 map.put("houseList", l);
-                list.add(map);
-
-            }
-            return ResultDTO.ok_data(list);
-        }
-        return ResultDTO.error_msg(50241, "查询失败");
-    }
-
-
-    @ApiOperation(position = 10, value = "房屋列表数量(村居)")
-    @PostMapping("/getHousesBycjNum")
-    public ResultDTO getHousesBycjNum(@RequestBody @Valid HouseDTO.getHousesBycj dto) {
-        StandardDTO.areaADto a = new StandardDTO.areaADto().setAreaDm(dto.getJzdzSqcjdm()).setType(dto.getType());
-        JSONObject jsonObject = standardHelper.getType(a);
-        List<Map<String, Object>> list = new ArrayList<>();
-        if (jsonObject.getInteger("status") == 200) {
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (Object o : jsonArray) {
-                JSONObject json = (JSONObject) JSONObject.toJSON(o);
-                Map<String, Object> map = new HashMap<>();
-                map.put("building_name", json.getString("mc"));
-                map.put("building_rec", json.getString("dm"));
-                map.put("building_address", json.getString("jwhQc"));
-
-                QueryWrapper wrapper = new QueryWrapper<>()
-                        .likeRight(!StringUtils.isEmpty(json.getString("dm")), "sssqcjdm", json.getString("dm"))
-                        .like(!StringUtils.isEmpty(dto.getFwxxbm()), "fwxxbm", dto.getFwxxbm());
-                int l = houseService.count(wrapper);
-
-                map.put("houseSize", l);
+                map.put("count",l.size());
                 list.add(map);
 
             }
@@ -117,7 +89,8 @@ public class HouseController {
     @ApiOperation(position = 10, value = "房屋列表(警务)")
     @PostMapping("/getHousesByjw")
     public ResultDTO getHousesByjw(@RequestBody @Valid HouseDTO.getHousesByjw dto) {
-        StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
+        StandardDTO.areaDto a = new StandardDTO.areaDto();
+        a.setArea(dto.getSsjwqdm()); a.setType(dto.getType());
         JSONObject jsonObject = standardHelper.policeArea(a);
         List<Map<String, Object>> list = new ArrayList<>();
         if (jsonObject.getInteger("status") == 200) {
@@ -125,45 +98,19 @@ public class HouseController {
             for (Object o : jsonArray) {
                 JSONObject json = (JSONObject) JSONObject.toJSON(o);
                 Map<String, Object> map = new HashMap<>();
-                map.put("building_name", json.getString("mc"));
-                map.put("building_rec", json.getString("dm"));
-                map.put("building_address", json.getString("jwhQc"));
+                map.put("police_name", json.getString("name"));
+                map.put("police_rec", json.getString("id"));
 
                 QueryWrapper wrapper = new QueryWrapper<>()
-                        .likeRight(!StringUtils.isEmpty(json.getString("dm")), "sssqcjdm", json.getString("dm"))
+                        .likeRight(!StringUtils.isEmpty(json.getString("id")), "sssqcjdm",
+                                json.getString("id").replaceAll("0+$", ""))
                         .like(!StringUtils.isEmpty(dto.getFwxxbm()), "fwxxbm", dto.getFwxxbm());
+
+
                 List l = houseService.list(wrapper);
 
                 map.put("houseList", l);
-                list.add(map);
-
-            }
-            return ResultDTO.ok_data(list);
-        }
-        return ResultDTO.error_msg(50241, "查询失败");
-    }
-
-    @ApiOperation(position = 10, value = "房屋列表数量(警务)")
-    @PostMapping("/getHousesByjwNum")
-    public ResultDTO getHousesByjwNum(@RequestBody @Valid HouseDTO.getHousesByjw dto) {
-        StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
-        JSONObject jsonObject = standardHelper.policeArea(a);
-        List<Map<String, Object>> list = new ArrayList<>();
-        if (jsonObject.getInteger("status") == 200) {
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for (Object o : jsonArray) {
-                JSONObject json = (JSONObject) JSONObject.toJSON(o);
-                Map<String, Object> map = new HashMap<>();
-                map.put("building_name", json.getString("mc"));
-                map.put("building_rec", json.getString("dm"));
-                map.put("building_address", json.getString("jwhQc"));
-
-                QueryWrapper wrapper = new QueryWrapper<>()
-                        .likeRight(!StringUtils.isEmpty(json.getString("dm")), "sssqcjdm", json.getString("dm"))
-                        .like(!StringUtils.isEmpty(dto.getFwxxbm()), "fwxxbm", dto.getFwxxbm());
-                int l = houseService.count(wrapper);
-
-                map.put("houseSize", l);
+                map.put("count",l.size());
                 list.add(map);
 
             }
