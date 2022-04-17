@@ -46,8 +46,19 @@ public class PeopleDTO {
         private String rkbm;
         @ApiModelProperty(value = "社区(村居)", example = "123")
         private String sqcjdm;
-//        @ApiModelProperty(value = "所属警务区", example = "123")
-//        private String ssjwqdm;
+        @ApiModelProperty(value = "所属警务区", example = "123")
+        private String ssjwqdm;
+    }
+
+    @Data
+    public static class peopleList {
+        @ApiModelProperty(value = "人口编码", example = "123")
+        private String rkbm;
+        @ApiModelProperty(value = "社区(村居)", example = "123")
+        private String sqcjdm;
+        @ApiModelProperty(value = "所属警务区", example = "123")
+        private String ssjwqdm;
+        private Integer type;
     }
 
     @Data

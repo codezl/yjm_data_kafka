@@ -55,8 +55,9 @@ public class BuildingCheckController {
         QueryWrapper wrapper = new QueryWrapper<>().likeRight(!StringUtils.isEmpty(dto.getSqcjdm()),
                 "sssqcjdm", dto.getSqcjdm())
                 .eq(!StringUtils.isEmpty(dto.getDzbm()), "dzbm", dto.getDzbm())
-                .likeRight(!StringUtils.isEmpty(dto.getSsjwqdm()), "ssjwqdm", dto.getSsjwqdm())
                 .likeRight(!StringUtils.isEmpty(dto.getJzwxxbm()), "jzwxxbm", dto.getJzwxxbm());
+        if (!StringUtils.isEmpty(dto.getSsjwqdm())) wrapper.likeRight(!StringUtils.isEmpty(dto.getSsjwqdm()),
+                "ssjwqdm", dto.getSsjwqdm().replaceAll("0+$", ""));
         Page<BuildingCheck> buildingCheckPage = buildingCheckDao.selectPage(new Page<>(dto.getPageIndex(), dto.getPageSize()), wrapper);
         return ResultDTO.ok_data(buildingCheckPage);
     }
@@ -67,8 +68,10 @@ public class BuildingCheckController {
     public ResultDTO buildingCheckCount(@RequestBody @Valid BuildingDTO.getBuilding dto) {
         QueryWrapper wrapper = new QueryWrapper<>().likeRight(!StringUtils.isEmpty(dto.getSqcjdm()), "sssqcjdm", dto.getSqcjdm())
                 .eq(!StringUtils.isEmpty(dto.getDzbm()), "dzbm", dto.getDzbm())
-                .likeRight(!StringUtils.isEmpty(dto.getSsjwqdm()), "ssjwqdm", dto.getSsjwqdm())
                 .likeRight(!StringUtils.isEmpty(dto.getJzwxxbm()), "jzwxxbm", dto.getJzwxxbm());
+        if (!StringUtils.isEmpty(dto.getSsjwqdm())) wrapper.likeRight(!StringUtils.isEmpty(dto.getSsjwqdm()),
+                "ssjwqdm", dto.getSsjwqdm().replaceAll("0+$", ""));
+
         Integer buildingSize = buildingCheckDao.selectCount(wrapper);
         return ResultDTO.ok_data(buildingSize);
     }
@@ -129,6 +132,57 @@ public class BuildingCheckController {
                 list.add(map);
             }
             return ResultDTO.ok_data(list);
+        }
+        return ResultDTO.error_msg(50241, "查询失败");
+    }
+
+
+    @PostMapping("/buildingSize")
+    @ApiOperation(position = 60, value = "60.查询建筑物数量(聚合)")
+    public ResultDTO buildingSize(@RequestBody @Valid BuildingDTO.getBuildingList dto) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (!StringUtils.isEmpty(dto.getSsjwqdm())) {
+            StandardDTO.areaDto a = new StandardDTO.areaDto().setArea(dto.getSsjwqdm()).setType(dto.getType());
+            JSONObject jsonObject = standardHelper.policeArea(a);
+            if (jsonObject.getInteger("status") == 200) {
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                for (Object o : jsonArray) {
+                    JSONObject json = (JSONObject) JSONObject.toJSON(o);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("building_name", json.getString("name"));
+                    map.put("building_rec", json.getString("id"));
+                    QueryWrapper wrapper = new QueryWrapper<>().likeRight(!StringUtils.isEmpty(dto.getSqcjdm()), "sssqcjdm", dto.getSqcjdm())
+                            .like(!StringUtils.isEmpty(dto.getDzbm()), "dzbm", dto.getDzbm())
+                            .likeRight(!StringUtils.isEmpty(json.getString("id")), "ssjwqdm",
+                                    json.getString("id").replaceAll("0+$", ""))
+                            .likeRight(!StringUtils.isEmpty(dto.getJzwxxbm()), "jzwxxbm", dto.getJzwxxbm());
+                    Integer buildingSize = buildingCheckDao.selectCount(wrapper);
+                    map.put("buildingSize", buildingSize);
+                    list.add(map);
+                }
+                return ResultDTO.ok_data(list);
+            }
+        } else if (!StringUtils.isEmpty(dto.getSqcjdm())) {
+            StandardDTO.areaADto a = new StandardDTO.areaADto().setType(dto.getType()).setAreaDm(dto.getSqcjdm());
+            JSONObject jsonObject = standardHelper.getType(a);
+            if (jsonObject.getInteger("status") == 200) {
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                for (Object o : jsonArray) {
+                    JSONObject json = (JSONObject) JSONObject.toJSON(o);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("building_name", json.getString("mc"));
+                    map.put("building_rec", json.getString("dm"));
+                    map.put("building_address", json.getString("jwhQc"));
+                    QueryWrapper wrapper = new QueryWrapper<>().likeRight(!StringUtils.isEmpty(json.getString("dm")), "sssqcjdm", json.getString("dm"))
+                            .like(!StringUtils.isEmpty(dto.getDzbm()), "dzbm", dto.getDzbm())
+                            .like(!StringUtils.isEmpty(dto.getSsjwqdm()), "ssjwqdm", dto.getSsjwqdm())
+                            .likeRight(!StringUtils.isEmpty(dto.getJzwxxbm()), "jzwxxbm", dto.getJzwxxbm());
+                    Integer buildingSize = buildingCheckDao.selectCount(wrapper);
+                    map.put("buildingSize", buildingSize);
+                    list.add(map);
+                }
+                return ResultDTO.ok_data(list);
+            }
         }
         return ResultDTO.error_msg(50241, "查询失败");
     }
