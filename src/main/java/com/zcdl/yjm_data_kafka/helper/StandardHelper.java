@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class StandardHelper {
     private final HttpHelper httpHelper;
-//    private static String Url = "http://192.168.4.58:25513/";
-    private static String Url = "http://www.wqewt.com/";
+//        private static String Url = "http://192.168.4.58:25513/";
+    private static String Url = "https://www.wqewt.com:2443/standard/";
 
     public StandardHelper(HttpHelper httpHelper) {
         this.httpHelper = httpHelper;
@@ -23,7 +23,7 @@ public class StandardHelper {
      * @return
      */
     public JSONObject policeArea(StandardDTO.areaDto dto) {
-        JSONObject json= (JSONObject) JSONObject.toJSON(dto);
+        JSONObject json = (JSONObject) JSONObject.toJSON(dto);
         JSONObject jsonObjec = httpHelper.postM(Url + "collect/policeArea", "json", json.toString());
         return jsonObjec;
     }
@@ -35,7 +35,7 @@ public class StandardHelper {
      * @return
      */
     public JSONObject getType(StandardDTO.areaADto dto) {
-        JSONObject json= (JSONObject) JSONObject.toJSON(dto);
+        JSONObject json = (JSONObject) JSONObject.toJSON(dto);
         JSONObject jsonObjec = httpHelper.postM(Url + "policeStandard/getType", "json", json.toString());
         return jsonObjec;
     }

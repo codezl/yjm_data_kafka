@@ -40,15 +40,15 @@ public class PeopleServiceImpl extends ServiceImpl<PeopleDao, People> implements
         String jzdzSqcjdm = dto.getJzdzSqcjdm();
         String jzdzSsjwqdm = dto.getJzdzSsjwqdm();
         String xm = dto.getXm();
-        System.out.println(jzdzSsjwqdm+"---"+jzdzSqcjdm);
+        System.out.println(jzdzSsjwqdm + "---" + jzdzSqcjdm);
         QueryWrapper wrapper = new QueryWrapper<People>()
                 .eq(StrUtil.isNotBlank(jzdzDzbm), "jzdz_dzbm", jzdzDzbm).likeRight(StrUtil.isNotBlank(jzdzSsxqdm), "jzdz_ssxqdm", jzdzSsxqdm)
                 .like(StrUtil.isNotBlank(xm), "xm", xm);
-        if (!StrUtil.isNotBlank(jzdzSsjwqdm) || jzdzSsjwqdm!=null)
-            wrapper.likeRight(!StrUtil.isEmpty(jzdzSsjwqdm), "jzdz_ssjwqdm", jzdzSsjwqdm.replaceAll("0+$", ""));
+        if (!StringUtils.isEmpty(jzdzSsjwqdm))
+            wrapper.likeRight("jzdz_ssjwqdm", jzdzSsjwqdm.replaceAll("0+$", ""));
 
-        if (!StrUtil.isNotBlank(jzdzSqcjdm) || jzdzSqcjdm!=null)
-            wrapper.likeRight(StrUtil.isNotBlank(jzdzSqcjdm), "jzdz_sqcjdm", jzdzSqcjdm);
+        if (!StringUtils.isEmpty(jzdzSqcjdm))
+            wrapper.likeRight("jzdz_sqcjdm", jzdzSqcjdm);
         wrapper.orderByDesc("id");
         Page<People> page = this.page(new Page<>(dto.getPageIndex(), dto.getPageSize()), wrapper);
         return ResultDTO.ok_data(page);

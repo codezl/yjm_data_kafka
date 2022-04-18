@@ -74,7 +74,7 @@ public class PeopleController {
     }
 
 
-    @ApiOperation(position = 10, value = "人员注销列表(村居/警务)")
+    @ApiOperation(position = 30, value = "人员注销列表(村居/警务)")
     @PostMapping("/getPeopleLogoutBycjORpl")
     public ResultDTO getPeopleLogoutBycjORpl(@RequestBody @Valid PeopleDTO.getPeoplesBycjORpl dto) {
         String ssjwqdm = dto.getSsjwqdm();
@@ -187,7 +187,7 @@ public class PeopleController {
 
 
 
-    @ApiOperation(position = 10, value = "人员列表(村居/警务)")
+    @ApiOperation(position = 60, value = "人员列表(村居/警务)")
     @PostMapping("/getPeoplesBycjORpl")
     public ResultDTO getPeoplesBycjORpl(@RequestBody @Valid PeopleDTO.getPeoplesBycjORpl dto) {
         String ssjwqdm = dto.getSsjwqdm();
