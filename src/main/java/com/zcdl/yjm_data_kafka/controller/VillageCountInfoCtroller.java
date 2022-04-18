@@ -7,6 +7,7 @@ import com.zcdl.yjm_data_kafka.mapper.VillageCountInfoMapper;
 import com.zcdl.yjm_data_kafka.model.VillageCountInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +33,7 @@ public class VillageCountInfoCtroller {
     VillageCountInfoMapper countInfoMapper;
 
     @PostMapping("add")
-    @ApiModelProperty(name = "增加村居统计信息",notes = "同一村居只能添加一次")
+    @ApiOperation(value = "增加村居统计信息",notes = "同一村居只能添加一次")
     @Transactional
     public R<String> add(@RequestBody VillageCountInfo info) {
         Map<String,Object> map = new HashMap<>();
@@ -44,7 +42,7 @@ public class VillageCountInfoCtroller {
         if (oldInfo.size()>0) {
             return R.failed("村居已存在，请确认");
         }
-        info.setCreateTime(LocalDateTime.now());
+        info.setCreateTime(new Date());
         boolean insert = countInfoMapper.insert(info)==1;
         if (insert) {
             return R.ok("新增成功");
@@ -53,7 +51,7 @@ public class VillageCountInfoCtroller {
     }
 
     @PostMapping("update")
-    @ApiModelProperty(name = "更新村居统计信息",notes = "参数")
+    @ApiOperation(value = "更新村居统计信息",notes = "参数")
     @Transactional
     public R<String> update(@RequestBody VillageCountInfo info) {
         Map<String,Object> map = new HashMap<>();
@@ -66,7 +64,7 @@ public class VillageCountInfoCtroller {
             //return this.add(info);
             return R.failed("村居不存在,请确认");
         }
-        info.setUpdateTime(LocalDateTime.now());
+        info.setUpdateTime(new Date());
         boolean insert = countInfoMapper.updateById(info)==1;
         if (insert) {
             return R.ok("更新成功");
@@ -75,7 +73,7 @@ public class VillageCountInfoCtroller {
     }
 
     @PostMapping("get")
-    @ApiModelProperty(name = "获取村居统计信息",notes = "参数为ID或村居编码")
+    @ApiOperation(value = "获取村居统计信息",notes = "参数为ID或村居编码")
     @Transactional
     public R<Object> get(@RequestBody VillageCountInfoDTO info) {
         boolean ty = info.getType()==1;

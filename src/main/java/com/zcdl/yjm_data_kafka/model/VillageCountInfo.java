@@ -2,11 +2,13 @@ package com.zcdl.yjm_data_kafka.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,6 +28,8 @@ public class VillageCountInfo {
     @ApiModelProperty("人口数")
     @NotNull(message = "请填写人口数")
     private Integer peoplesNumber;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updateTime;
 }
