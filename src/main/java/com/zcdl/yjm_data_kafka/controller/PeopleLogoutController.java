@@ -96,4 +96,27 @@ public class PeopleLogoutController {
         }
         return R.failed("查询失败");
     }
+
+    @PostMapping("searchPeopleLogouts")
+    @ApiOperation(value = "查找居民迁出记录",tags = "居民迁出")
+    public R<Object> findPeopleLogouts(@RequestBody PeopleLogoutDTO.requestParams params) {
+        boolean ty = params.getType()<0&&params.getType()>3;
+        if (ty) {
+            return R.failed("类型错误");
+        }
+        boolean bjw = params.getCjbm()!=null;
+        boolean bcj = params.getJwbm()!=null;
+        /**
+         * @Description: 优先警务
+         */
+        if (bjw) {
+
+        }else if (bcj) {
+
+        }
+        else {
+            return R.failed("警务和村居编码不能都为空");
+        }
+        return null;
+    }
 }
