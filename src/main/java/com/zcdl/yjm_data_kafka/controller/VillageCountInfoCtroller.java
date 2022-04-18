@@ -35,39 +35,51 @@ public class VillageCountInfoCtroller {
     @PostMapping("add")
     @ApiOperation(value = "增加村居统计信息",notes = "同一村居只能添加一次")
     @Transactional
-    public R<String> add(@RequestBody VillageCountInfo info) {
+    public R<String> add(@RequestBody VillageCountInfoDTO.setDTO info) {
         Map<String,Object> map = new HashMap<>();
         map.put("cjbm",info.getCjbm());
         List<VillageCountInfo> oldInfo = countInfoMapper.selectByMap(map);
         if (oldInfo.size()>0) {
             return R.failed("村居已存在，请确认");
         }
-        info.setCreateTime(new Date());
-        boolean insert = countInfoMapper.insert(info)==1;
+        VillageCountInfo countInfo = new VillageCountInfo();
+        countInfo.setCjbm(info.getCjbm());
+        countInfo.setHouseNumber(info.getHouseNumber());
+        countInfo.setPeoplesNumber(info.getPeoplesNumber());
+        countInfo.setCreateTime(new Date());
+        boolean insert = countInfoMapper.insert(countInfo)==1;
         if (insert) {
-            return R.ok("新增成功");
+            return R.ok("新增");
         }
         return R.failed("新增失败");
     }
 
     @PostMapping("update")
-    @ApiOperation(value = "更新村居统计信息",notes = "参数")
+    @ApiOperation(value = "更新村居统计信息",notes = "根据ID更新")
     @Transactional
     public R<String> update(@RequestBody VillageCountInfo info) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("cjbm",info.getCjbm());
         if (info.getId()==null) {
             return R.failed("请传入更新村居的ID");
         }
+        boolean b = (info.getHouseNumber()!=null&&info.getHouseNumber()<0)||
+                (info.getPeoplesNumber()!=null&&info.getPeoplesNumber()<0);
+        if (b) {
+            return R.failed("房屋和人口不能为负");
+        }
+        if (info.getCjbm()!=null&&"".equals(info.getCjbm())){
+            return R.failed("村居编码不能为空");
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("id",info.getId());
+        info.setUpdateTime(new Date());
         List<VillageCountInfo> oldInfo = countInfoMapper.selectByMap(map);
         if (oldInfo.size()==0) {
             //return this.add(info);
             return R.failed("村居不存在,请确认");
         }
-        info.setUpdateTime(new Date());
         boolean insert = countInfoMapper.updateById(info)==1;
         if (insert) {
-            return R.ok("更新成功");
+            return R.ok("更新");
         }
         return R.failed("更新失败");
     }
@@ -75,7 +87,7 @@ public class VillageCountInfoCtroller {
     @PostMapping("get")
     @ApiOperation(value = "获取村居统计信息",notes = "参数为ID或村居编码")
     @Transactional
-    public R<Object> get(@RequestBody VillageCountInfoDTO info) {
+    public R<Object> get(@RequestBody VillageCountInfoDTO.getDTO info) {
         boolean ty = info.getType()==1;
         if (ty) {
             if (info.getId()==null) {

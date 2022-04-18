@@ -1,5 +1,6 @@
 package com.zcdl.yjm_data_kafka.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -13,9 +14,24 @@ import java.time.LocalDateTime;
 */
 @Data
 public class VillageCountInfoDTO {
-    private Integer id;
-    @ApiModelProperty("村居编码")
-    private String cjbm;
-    @ApiModelProperty(name = "操作",notes = "1 根据id操作，2 根据村居操作")
-    private Integer type;
+    @Data
+    public static class getDTO {
+        private Integer id;
+        @ApiModelProperty("村居编码")
+        private String cjbm;
+        @ApiModelProperty(name = "操作",notes = "1 根据ID操作，2 根据村居操作")
+        private Integer type;
+    }
+
+    @Data
+    @ApiModel("增加、更新实体")
+    public static class setDTO {
+        @ApiModelProperty("村居编码")
+        private String cjbm;
+        @ApiModelProperty("房屋数")
+        private Integer houseNumber;
+        @ApiModelProperty("人口数")
+        private Integer peoplesNumber;
+    }
+
 }
