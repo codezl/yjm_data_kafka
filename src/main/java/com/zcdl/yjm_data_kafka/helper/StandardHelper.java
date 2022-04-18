@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class StandardHelper {
     private final HttpHelper httpHelper;
-//        private static String Url = "http://192.168.4.58:25513/";
-    private static String Url = "https://www.wqewt.com:2443/standard/";
+        private static String Url = "http://192.168.4.58:25513/";
+//    private static String Url = "https://www.wqewt.com:2443/standard/";
 
     public StandardHelper(HttpHelper httpHelper) {
         this.httpHelper = httpHelper;

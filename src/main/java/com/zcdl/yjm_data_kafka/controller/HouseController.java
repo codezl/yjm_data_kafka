@@ -60,11 +60,7 @@ public class HouseController {
     @ApiOperation(position = 10, value = "房屋列表(村居/警务)")
     @PostMapping("/getHousesBycjORpl")
     public ResultDTO getHousesBycjORpl(@RequestBody @Valid HouseDTO.getHousesBycjORpl dto) {
-        String ssjwqdm = dto.getSsjwqdm();
         String jzdzSqcjdm = dto.getJzdzSqcjdm();
-
-        if (StrUtil.isBlank(ssjwqdm) && StrUtil.isBlank(jzdzSqcjdm))return ResultDTO.error_msg(50242, "警务编号和村居编号必须有一个");
-
         List<Map<String, Object>> list = new ArrayList<>();
         // 村居
         if (StrUtil.isNotBlank(jzdzSqcjdm)){
@@ -74,7 +70,10 @@ public class HouseController {
                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                 for (Object o : jsonArray) {
                     JSONObject json = (JSONObject) JSONObject.toJSON(o);
-                    Map<String, Object> map = CommonUtils.putCJMap(json);
+                    Map<String, Object> map =new HashMap<>();
+                    map.put("house_name", json.getString("mc"));
+                    map.put("house_rec", json.getString("dm"));
+                    map.put("house_address", json.getString("jwhQc"));
                     QueryWrapper wrapper = new QueryWrapper<>()
                             .likeRight(!StringUtils.isEmpty(json.getString("dm")), "sssqcjdm", json.getString("dm"))
                             .like(!StringUtils.isEmpty(dto.getFwxxbm()), "fwxxbm", dto.getFwxxbm());
@@ -95,8 +94,9 @@ public class HouseController {
                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                 for (Object o : jsonArray) {
                     JSONObject json = (JSONObject) JSONObject.toJSON(o);
-                    Map<String, Object> map = CommonUtils.putCJMap(json);
-
+                    Map<String, Object> map =new HashMap<>();
+                    map.put("house_name", json.getString("name"));
+                    map.put("house_rec", json.getString("id"));
                     QueryWrapper wrapper = new QueryWrapper<>()
                             .likeRight(!StringUtils.isEmpty(json.getString("id")), "ssjwqdm",
                                     json.getString("id").replaceAll("0+$", ""))
