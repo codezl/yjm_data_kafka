@@ -32,4 +32,15 @@ public class VillageCountInfo {
     private Date createTime;
     @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    @ApiModelProperty(value = "存在状态",notes = "1存在 0不存在")
+    @NotNull(message = "输入状态")
+    private Integer exits;
+    @ApiModelProperty("村居名字")
+    @NotNull(message = "输入村居名")
+    private String cjmc;
+    @ApiModelProperty("村居类型")
+    @NotNull(message = "输入村居类型")
+    private Integer flag;
+    @ApiModelProperty("二维码数量")
+    private Integer qrCodeNumber;
 }
