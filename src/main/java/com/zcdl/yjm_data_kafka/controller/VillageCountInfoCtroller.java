@@ -93,7 +93,7 @@ public class VillageCountInfoCtroller {
     * @Date: 2022/4/19
     */
     @PostMapping("get")
-    @ApiOperation(value = "获取村居统计信息",notes = "参数为ID或村居编码")
+    @ApiOperation(value = "获取村居统计信息",notes = "参数为ID、村居编码或村居名")
     @Transactional
     public R<Object> get(@RequestBody VillageCountInfoDTO.getDTO info) {
         boolean ty = info.getType()==1;
@@ -116,7 +116,7 @@ public class VillageCountInfoCtroller {
                 return R.failed("请传入村居编码");
             }
             QueryWrapper<VillageCountInfo> wrapper = new QueryWrapper<VillageCountInfo>()
-                    .eq("cjbm",info.getCjbm());
+                    .like("cjbm",info.getCjbm());
             //wrapper.last("limit 1");
             get = countInfoMapper.selectList(wrapper);
             if (get.size()==0) {
@@ -129,7 +129,7 @@ public class VillageCountInfoCtroller {
                 return R.failed("请传入村居名");
             }
             QueryWrapper<VillageCountInfo> wrapper = new QueryWrapper<VillageCountInfo>()
-                    .eq("cjmc",info.getCjmc());
+                    .like("cjmc",info.getCjmc());
             //wrapper.last("limit 1");
             get = countInfoMapper.selectList(wrapper);
             if (get.size()==0) {

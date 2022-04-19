@@ -29,6 +29,7 @@ public class VillageCountInfoDTO {
     @ApiModel("增加、更新实体")
     public static class setDTO {
         @ApiModelProperty(value = "村居编码",required = true)
+        @NotNull(message = "编码不能为空")
         private String cjbm;
         @ApiModelProperty("房屋数")
         private Integer houseNumber;
@@ -37,7 +38,7 @@ public class VillageCountInfoDTO {
         @ApiModelProperty(value = "村居名字",required = true)
         @NotNull(message = "输入村居名")
         private String cjmc;
-        @ApiModelProperty("村居类型")
+        @ApiModelProperty("村居类型1 区 2 街道 镇，3 村4 村小组")
         @NotNull(message = "输入村居类型")
         private Integer flag;
         @ApiModelProperty("二维码数量")
