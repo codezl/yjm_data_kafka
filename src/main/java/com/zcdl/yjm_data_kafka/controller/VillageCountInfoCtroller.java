@@ -2,14 +2,12 @@ package com.zcdl.yjm_data_kafka.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.zcdl.yjm_data_kafka.dto.VillageCountInfoDTO;
-import com.zcdl.yjm_data_kafka.mapper.VillageCountInfoMapper;
+import com.zcdl.yjm_data_kafka.mapper.VillageCountInfoDao;
 import com.zcdl.yjm_data_kafka.model.VillageCountInfo;
+import com.zcdl.yjm_data_kafka.service.impl.VillageCountInfoServiceImpl;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -32,57 +29,41 @@ import java.util.*;
 public class VillageCountInfoCtroller {
 
     @Autowired
-    VillageCountInfoMapper countInfoMapper;
+    VillageCountInfoDao countInfoMapper;
+    @Autowired
+    VillageCountInfoServiceImpl serviceImpl;
     @PostMapping("add")
     @ApiOperation(value = "增加村居统计信息",notes = "同一村居只能添加一次")
     @Transactional
     public R<String> add(@RequestBody VillageCountInfoDTO.setDTO info) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("cjbm",info.getCjbm());
-        List<VillageCountInfo> oldInfo = countInfoMapper.selectByMap(map);
-        if (oldInfo.size()>0) {
-            return R.failed("村居已存在，请确认");
-        }
-        VillageCountInfo countInfo = new VillageCountInfo();
-        countInfo.setCjbm(info.getCjbm());
-        countInfo.setHouseNumber(info.getHouseNumber());
-        countInfo.setPeoplesNumber(info.getPeoplesNumber());
-        countInfo.setCreateTime(new Date());
-        boolean insert = countInfoMapper.insert(countInfo)==1;
-        if (insert) {
-            return R.ok("新增");
-        }
-        return R.failed("新增失败");
+        return serviceImpl.add(info);
     }
 
     @PostMapping("update")
-    @ApiOperation(value = "更新村居统计信息",notes = "根据ID更新")
+    @ApiOperation(value = "更新村居统计信息",notes = "根据村居编码更新")
     @Transactional
     public R<String> update(@RequestBody VillageCountInfo info) {
-        if (info.getId()==null) {
-            return R.failed("请传入更新村居的ID");
+        boolean bp = StringUtils.isEmpty(info.getId());
+        if (bp) {
+            return R.failed("请传入更新的村居编号");
         }
         boolean b = (info.getHouseNumber()!=null&&info.getHouseNumber()<0)||
                 (info.getPeoplesNumber()!=null&&info.getPeoplesNumber()<0);
         if (b) {
             return R.failed("房屋和人口不能为负");
         }
-        if (info.getCjbm()!=null&&"".equals(info.getCjbm())){
-            return R.failed("村居编码不能为空");
-        }
         Map<String,Object> map = new HashMap<>();
-        map.put("id",info.getId());
+        map.put("cjbm",info.getCjbm());
         info.setUpdateTime(new Date());
         List<VillageCountInfo> oldInfo = countInfoMapper.selectByMap(map);
         if (oldInfo.size()==0) {
-            //return this.add(info);
             return R.failed("村居不存在,请确认");
         }
         boolean insert = countInfoMapper.updateById(info)==1;
         if (insert) {
-            return R.ok("更新");
+            return R.ok("成功");
         }
-        return R.failed("更新失败");
+        return R.failed("失败");
     }
 
     /**

@@ -10,5 +10,5 @@ import com.zcdl.yjm_data_kafka.model.VillageCountInfo;
  * @Date: 2022/04/18/10:56
  * @Description:
  */
-public interface VillageCountInfoMapper extends BaseMapper<VillageCountInfo> {
+public interface VillageCountInfoDao extends BaseMapper<VillageCountInfo> {
 }

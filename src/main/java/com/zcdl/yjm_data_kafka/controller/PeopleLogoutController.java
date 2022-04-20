@@ -12,6 +12,7 @@ import com.zcdl.yjm_data_kafka.dto.StandardDTO;
 import com.zcdl.yjm_data_kafka.helper.StandardHelper;
 import com.zcdl.yjm_data_kafka.mapper.PeopleLogoutDao;
 import com.zcdl.yjm_data_kafka.model.PeopleLogout;
+import com.zcdl.yjm_data_kafka.service.IPeopleLogoutService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -35,9 +36,11 @@ public class PeopleLogoutController {
     PeopleLogoutDao peopleLogoutDao;
     @Autowired
     StandardHelper standardHelper;
+    @Autowired
+    IPeopleLogoutService iPeopleLogoutService;
 
-    @PostMapping("peopleLogoutsByPolice")
-    @ApiOperation("警务区查询用户迁出记录")
+//    @PostMapping("peopleLogoutsByPolice")
+//    @ApiOperation("警务区查询用户迁出记录")
     public R<Object> peopleLogoutList(@RequestBody CommonResDTO.ComonRequestParams params) {
         StandardDTO.areaDto areaDto = new StandardDTO.areaDto();
         areaDto.setNcommittee(params.getJwbm());
@@ -65,8 +68,8 @@ public class PeopleLogoutController {
         return R.failed("查询失败");
     }
 
-    @PostMapping("peopleLogoutsByVillage")
-    @ApiOperation("村居查询用户迁出记录")
+//    @PostMapping("peopleLogoutsByVillage")
+//    @ApiOperation("村居查询用户迁出记录")
     public R<Object> peopleLogoutsByVillage(@RequestBody CommonResDTO.ComonRequestParams params) {
         StandardDTO.areaADto areaADto = new StandardDTO.areaADto();
         areaADto.setAreaDm(params.getCjbm());
@@ -104,19 +107,17 @@ public class PeopleLogoutController {
         if (ty) {
             return R.failed("类型错误");
         }
-        boolean bjw = params.getCjbm()!=null;
-        boolean bcj = params.getJwbm()!=null;
+        boolean bjw = params.getJwbm()==null || "".equals(params.getJwbm());
+        boolean bcj = params.getCjbm()==null || "".equals(params.getCjbm());
         /**
          * @Description: 优先警务
          */
-        if (bjw) {
-
-        }else if (bcj) {
-
-        }
-        else {
+        if (!bjw) {
+            return iPeopleLogoutService.peopleLogoutsByVillage(params);
+        }else if (!bcj) {
+            return iPeopleLogoutService.peopleLogoutsByPolice(params);
+        }else {
             return R.failed("警务和村居编码不能都为空");
         }
-        return null;
     }
 }
