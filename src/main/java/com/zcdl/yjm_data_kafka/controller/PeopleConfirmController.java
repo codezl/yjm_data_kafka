@@ -4,6 +4,7 @@ package com.zcdl.yjm_data_kafka.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.zcdl.yjm_data_kafka.dto.*;
 import com.zcdl.yjm_data_kafka.helper.StandardHelper;
@@ -65,7 +66,8 @@ public class PeopleConfirmController {
 
     @PostMapping("peopleConfirmsByPolice")
     @ApiOperation("用户登记记录，警务区查询")
-    public R<Object> peopleLogoutList(@RequestBody StandardDTO.areaDto areaDto) {
+    @Deprecated
+    public R<Object> peopleConfirmList(@RequestBody StandardDTO.areaDto areaDto) {
         StandardDTO.areaDto areaDto1 = new StandardDTO.areaDto();
         areaDto1.setType(3);
         JSONObject jsonObject = standardHelper.policeArea(areaDto1);
@@ -94,7 +96,8 @@ public class PeopleConfirmController {
 
     @PostMapping("peopleConfirmsByVillage")
     @ApiOperation("村居查询用户登记记录")
-    public R<Object> peopleLogoutsByVillage(@RequestBody StandardDTO.areaADto areaADto) {
+    @Deprecated
+    public R<Object> peopleConfirmsByVillage(@RequestBody StandardDTO.areaADto areaADto) {
         areaADto.setType(1);
         JSONObject jsonObject = standardHelper.getType(areaADto);
         List<PeopleConfirmDTO.VPeopleConfirmResDTO> responseParams;
@@ -105,9 +108,9 @@ public class PeopleConfirmController {
             }
             PeopleConfirmDTO.VPeopleConfirmResDTO dto;
             for (int i = 0; i < responseParams.size(); i++) {
-//            peopleLogoutDao.selectPage(new Page<>(),new QueryWrapper<PeopleLogout>()
-//                    .eq("jzdz_ssxqdm",requestParams.get(i).getDm())
-//                    .eq("jzdz_dzbm",requestParams.get(i).getDzdm()));
+            //peopleLogoutDao.selectPage(new Page<>(),new QueryWrapper<PeopleLogout>()
+            //        .eq("jzdz_ssxqdm",requestParams.get(i).getDm())
+            //        .eq("jzdz_dzbm",requestParams.get(i).getDzdm()));
                 QueryWrapper<PeopleConfirm> peopleLogoutQueryWrapper = new QueryWrapper<PeopleConfirm>()
                         .eq("dzbm", responseParams.get(i).getDzdm());
                 List<PeopleConfirm> peopleConfirms = peopleConfirmDao.selectList(peopleLogoutQueryWrapper);
@@ -120,5 +123,19 @@ public class PeopleConfirmController {
             return R.ok(responseParams);
         }
         return R.failed("查询失败");
+    }
+
+    @PostMapping("peopleConfirmsSearch")
+    @ApiOperation("居民住址登记信息")
+    public R<Object> peopleConfirmsSearch(@RequestBody PeopleConfirmDTO.searchParams params) {
+        boolean b1 = !(params.getDjrXm()==null||"".equals(params.getDjrXm()));
+        boolean b2 = !(params.getDzbm()==null||"".equals(params.getDzbm()));
+        boolean b3 = !(params.getDzmc()==null||"".equals(params.getDzmc()));
+        QueryWrapper<PeopleConfirm> wrapper = new QueryWrapper<PeopleConfirm>()
+                .like(b1,"djr_xm",params.getDjrXm()).like(b2,"dzbm",params.getDzbm())
+                .like(b3,"dzmc",params.getDzmc());
+        Page<PeopleConfirm> peopleConfirmPage = peopleConfirmDao.selectPage(new Page<>(params.getPageIndex(), params.getPageSize()),
+                wrapper);
+        return R.ok(peopleConfirmPage);
     }
 }
